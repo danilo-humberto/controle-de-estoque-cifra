@@ -1,0 +1,20 @@
+.container-card {
+    background-color: var(--main-color);
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s all;
+}
+
+.container-card:hover {
+    background-color: var(--hover-color);
+}
+
+.container-card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    color: var(--gray-300);
+}
