@@ -18,3 +18,9 @@
     height: 100%;
     color: var(--gray-300);
 }
+
+@media (width < 1400px) {
+    .container-card {
+        height: 80px;
+    }
+}

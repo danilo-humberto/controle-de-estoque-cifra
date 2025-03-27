@@ -1,10 +1,12 @@
 import { House, LogOut, Package, Users, Voicemail } from "lucide-react";
 import React, { useState } from "react";
 import "./sidebar.css";
+import { useMediaQuery } from "react-responsive";
 
 const Sidebar = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isSmallScreen = useMediaQuery({ maxWidth: 1400 });
 
   return (
     <div className={`container-sidebar ${isCollapsed ? "collapsed" : ""}`}>
@@ -16,25 +18,25 @@ const Sidebar = () => {
         <nav className="container-sidebar-content-nav">
           <ul>
             <li>
-              <House className="sidebar-icon" size={"32px"}/>
+              <House className="sidebar-icon" size={isSmallScreen ? 25 : 30}/>
               <a href="#">Home</a>
             </li>
             <li>
-              <Users className="sidebar-icon" size={"32px"}/>
+              <Users className="sidebar-icon" size={isSmallScreen ? 25 : 30}/>
               <a href="#">Funcionários</a>
             </li>
             <li>
-              <Package className="sidebar-icon" size={"2rem"}/>
+              <Package className="sidebar-icon" size={isSmallScreen ? 25 : 30}/>
               <a href="#">Produtos</a>
             </li>
             <li>
-              <Voicemail className="sidebar-icon" size={"2rem"}/>
+              <Voicemail className="sidebar-icon" size={isSmallScreen ? 25 : 30}/>
               <a href="#">Linhas</a>
             </li>
           </ul>
           <ul>
             <li>
-              <LogOut className="sidebar-icon" size={"2rem"}/>
+              <LogOut className="sidebar-icon" size={isSmallScreen ? 25 : 30}/>
               <a href="#">Sair</a>
             </li>
           </ul>

@@ -92,3 +92,14 @@
 .sidebar-icon {
     color: var(--gray-400);
 }
+
+@media (width < 1400px) {
+
+    .container-sidebar:not(.collapsed) .container-sidebar-content .container-sidebar-content-logo > h1 {
+        font-size: 1.1rem;
+    }
+
+    .container-sidebar:not(.collapsed) .container-sidebar-content .container-sidebar-content-nav > ul > li > a {
+        font-size: 0.8rem;
+    }
+}

@@ -62,3 +62,17 @@
     position: relative;
     top: -90px;
 }
+
+@media (width < 1400px) {
+    .container-statistic-content {
+        margin-top: 1.5rem;
+    }
+
+    .container-statistic-content > div > p {
+        font-size: 0.8rem;
+    }
+
+    .container-statistic-content > div > span {
+        font-size: 1.2rem;
+    }
+}
