@@ -93,6 +93,66 @@
     color: var(--gray-400);
 }
 
+.sidebar-greeting {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.container-sidebar.collapsed .sidebar-greeting {
+    gap: 0;
+}
+
+.sidebar-greeting > div {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    border: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-greeting > div > img {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+}
+
+.sidebar-greeting > p {
+    color: var(--gray-300);
+    transition: font-size 0.3s ease-in-out;
+}
+
+.container-sidebar.collapsed .sidebar-greeting > p {
+    font-size: 0;
+}
+.container-sidebar:not(.collapsed) .sidebar-greeting > p {
+    font-size: 1rem;
+}
+
+.container-sidebar .container-sidebar-content .container-sidebar-content-nav > ul:nth-child(2) > li:nth-child(1){
+    padding: 0.2rem;
+}
+
+.btn-login {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-login > button {
+    color: var(--gray-300);
+    background-color: var(--gray-600);
+    border: none;
+    outline: none;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 50%;
+}
+
+
 @media (width < 1400px) {
 
     .container-sidebar:not(.collapsed) .container-sidebar-content .container-sidebar-content-logo > h1 {
@@ -101,5 +161,14 @@
 
     .container-sidebar:not(.collapsed) .container-sidebar-content .container-sidebar-content-nav > ul > li > a {
         font-size: 0.8rem;
+    }
+
+    .container-sidebar:not(.collapsed) .sidebar-greeting > p {
+        font-size: 0.8rem;
+    }
+
+    .sidebar-greeting > div {
+        width: 2rem;
+        height: 2rem;
     }
 }

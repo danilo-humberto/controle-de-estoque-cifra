@@ -5,20 +5,10 @@ import { Package, Users, Voicemail } from "lucide-react";
 import Statistic from "../../assets/statistic/Statistic";
 
 const Home = () => {
-  const currentHour = new Date().getHours();
   const [horas, setHoras] = useState(new Date().getHours());
   const [minutos, setMinutos] = useState(
     String(new Date().getMinutes()).padStart(2, "0")
   );
-  let greeting = "";
-
-  if (currentHour >= 6 && currentHour < 12) {
-    greeting = "Bom dia";
-  } else if (currentHour >= 12 && currentHour < 18) {
-    greeting = "Boa tarde";
-  } else {
-    greeting = "Boa noite";
-  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -33,17 +23,6 @@ const Home = () => {
   return (
     <div className="container-home">
       <div className="container-home-content">
-        <div>
-          <div className="container-home-content-header">
-            <div>
-              <img
-                src="https://thumbs.dreamstime.com/b/vetor-de-%C3%ADcone-perfil-do-avatar-padr%C3%A3o-foto-usu%C3%A1rio-m%C3%ADdia-social-183042379.jpg"
-                alt="usuario"
-              />
-            </div>
-            <p>{greeting}, Eduardo Assunção</p>
-          </div>
-        </div>
         <div className="container-home-content-cards">
           <div>
             <Cards
