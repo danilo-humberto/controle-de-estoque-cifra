@@ -3,12 +3,14 @@ import "./Home.css";
 import Cards from "../../assets/cards/Cards";
 import { Package, Users, Voicemail } from "lucide-react";
 import Statistic from "../../assets/statistic/Statistic";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [horas, setHoras] = useState(new Date().getHours());
   const [minutos, setMinutos] = useState(
     String(new Date().getMinutes()).padStart(2, "0")
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,24 +27,33 @@ const Home = () => {
       <div className="container-home-content">
         <div className="container-home-content-cards">
           <div>
-            <Cards
-              span="Funcionários"
-              icon={<Users size={40} />}
-              color="var(--sky-700)"
-              hoverColor="var(--sky-800)"
-            />
-            <Cards
-              span="Equipamentos"
-              icon={<Package size={40} />}
-              color="var(--emerald-700)"
-              hoverColor="var(--emerald-800)"
-            />
-            <Cards
-              span="Linhas"
-              icon={<Voicemail size={40} />}
-              color="var(--pink-700)"
-              hoverColor="var(--pink-800)"
-            />
+            <Link to="/funcionarios">
+              <Cards
+                span="Funcionários"
+                icon={<Users size={40} />}
+                color="var(--sky-700)"
+                hoverColor="var(--sky-800)"
+                onClick={() => navigate("/funcionarios")}
+              />
+            </Link>
+            <Link to="/equipamentos">
+              <Cards
+                span="Equipamentos"
+                icon={<Package size={40} />}
+                color="var(--emerald-700)"
+                hoverColor="var(--emerald-800)"
+                route="/equipamentos"
+              />
+            </Link>
+            <Link to="/linhas">
+              <Cards
+                span="Linhas"
+                icon={<Voicemail size={40} />}
+                color="var(--pink-700)"
+                hoverColor="var(--pink-800)"
+                route="/linhas"
+              />
+            </Link>
           </div>
           <div className="container-home-content-cards-hours">
             <div>
@@ -60,9 +71,11 @@ const Home = () => {
         </div>
 
         <div className="container-home-content-dash">
-            <div>teste1</div>
-            <div><Statistic /></div>
+          <div>teste1</div>
+          <div>
+            <Statistic />
           </div>
+        </div>
       </div>
     </div>
   );

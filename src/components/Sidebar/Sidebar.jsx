@@ -11,12 +11,14 @@ import {
 import React, { useState } from "react";
 import "./sidebar.css";
 import { useMediaQuery } from "react-responsive";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const isSmallScreen = useMediaQuery({ maxWidth: 1400 });
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isLightMode, setIsLightMode] = useState(false);
+  const navigate = useNavigate();
 
   const currentHour = new Date().getHours();
   let greeting = "";
@@ -47,48 +49,63 @@ const Sidebar = () => {
         <nav className="container-sidebar-content-nav">
           <ul>
             <li>
-              <House className="sidebar-icon" size={isSmallScreen ? 25 : 30} />
-              <a href="#">Home</a>
+              <Link to="/home">
+                <House
+                  className="sidebar-icon"
+                  size={isSmallScreen ? 25 : 30}
+                />
+                <span>Home</span>
+              </Link>
             </li>
             <li>
-              <Users className="sidebar-icon" size={isSmallScreen ? 25 : 30} />
-              <a href="#">Funcionários</a>
+              <Link to="/funcionarios">
+                <Users className="sidebar-icon" size={isSmallScreen ? 25 : 30} />
+                <span>Funcionários</span>
+              </Link>
             </li>
             <li>
-              <Package
-                className="sidebar-icon"
-                size={isSmallScreen ? 25 : 30}
-              />
-              <a href="#">Equipamentos</a>
+              <Link to="/equipamentos">
+                <Package
+                  className="sidebar-icon"
+                  size={isSmallScreen ? 25 : 30}
+                />
+                <span>Equipamentos</span>
+              </Link>
             </li>
             <li>
-              <Voicemail
-                className="sidebar-icon"
-                size={isSmallScreen ? 25 : 30}
-              />
-              <a href="#">Linhas</a>
+              <Link to="/linhas">
+                <Voicemail
+                  className="sidebar-icon"
+                  size={isSmallScreen ? 25 : 30}
+                />
+                <span>Linhas</span>
+              </Link>
             </li>
           </ul>
           {isLoggedIn ? (
             <ul>
               {isLightMode ? (
-                <li style={{padding: "0.5rem"}} onClick={toggleTheme}>
-                  <Moon
-                    className="sidebar-icon"
-                    size={isSmallScreen ? 25 : 30}
-                  />
-                  <a href="#">Modo escuro</a>
+                <li onClick={toggleTheme} style={{paddingLeft: "0"}}>
+                  <Link>
+                    <Moon
+                      className="sidebar-icon"
+                      size={isSmallScreen ? 25 : 30}
+                    />
+                    <span>Modo escuro</span>
+                  </Link>
                 </li>
               ) : (
-                <li style={{padding: "0.5rem"}} onClick={toggleTheme}>
-                  <Sun
-                    className="sidebar-icon"
-                    size={isSmallScreen ? 25 : 30}
-                  />
-                  <a href="#">Modo claro</a>
+                <li onClick={toggleTheme} style={{paddingLeft: "0"}}>
+                  <Link>
+                    <Sun
+                      className="sidebar-icon"
+                      size={isSmallScreen ? 25 : 30}
+                    />
+                    <span>Modo claro</span>
+                  </Link>
                 </li>
               )}
-              <li style={{padding: "0.4rem"}}>
+              <li style={{ padding: "0.4rem" }}>
                 <div className="sidebar-greeting">
                   <div>
                     <img
@@ -100,38 +117,46 @@ const Sidebar = () => {
                 </div>
               </li>
               <li>
-                <LogOut
-                  className="sidebar-icon"
-                  size={isSmallScreen ? 25 : 30}
-                />
-                <a href="#">Sair</a>
+                <Link>
+                  <LogOut
+                    className="sidebar-icon"
+                    size={isSmallScreen ? 25 : 30}
+                  />
+                  <span>Sair</span>
+                </Link>
               </li>
             </ul>
           ) : (
             <ul>
               {isLightMode ? (
-                <li style={{padding: "0.5rem"}} onClick={toggleTheme}>
-                  <Moon
-                    className="sidebar-icon"
-                    size={isSmallScreen ? 25 : 30}
-                  />
-                  <a href="#">Modo escuro</a>
+                <li onClick={toggleTheme} style={{paddingLeft: "0"}}>
+                  <Link>
+                    <Moon
+                      className="sidebar-icon"
+                      size={isSmallScreen ? 25 : 30}
+                    />
+                    <span>Modo escuro</span>
+                  </Link>
                 </li>
               ) : (
-                <li style={{padding: "0.5rem"}} onClick={toggleTheme}>
-                  <Sun
-                    className="sidebar-icon"
-                    size={isSmallScreen ? 25 : 30}
-                  />
-                  <a href="#">Modo claro</a>
+                <li onClick={toggleTheme} style={{paddingLeft: "0"}}>
+                  <Link>
+                    <Sun
+                      className="sidebar-icon"
+                      size={isSmallScreen ? 25 : 30}
+                    />
+                    <span>Modo claro</span>
+                  </Link>
                 </li>
               )}
-              <li style={{ padding: "0.5rem" }}>
-                <LogIn
-                  size={isSmallScreen ? 25 : 30}
-                  className="sidebar-icon"
-                />
-                <a href="#">Entrar</a>
+              <li>
+                <Link>
+                  <LogIn
+                    size={isSmallScreen ? 25 : 30}
+                    className="sidebar-icon"
+                  />
+                  <span>Entrar</span>
+                </Link>
               </li>
             </ul>
           )}
