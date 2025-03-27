@@ -15,7 +15,7 @@ import { useMediaQuery } from "react-responsive";
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const isSmallScreen = useMediaQuery({ maxWidth: 1400 });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isLightMode, setIsLightMode] = useState(false);
 
   const currentHour = new Date().getHours();
@@ -72,7 +72,7 @@ const Sidebar = () => {
           {isLoggedIn ? (
             <ul>
               {isLightMode ? (
-                <li>
+                <li style={{padding: "0.5rem"}} onClick={toggleTheme}>
                   <Moon
                     className="sidebar-icon"
                     size={isSmallScreen ? 25 : 30}
@@ -80,7 +80,7 @@ const Sidebar = () => {
                   <a href="#">Modo escuro</a>
                 </li>
               ) : (
-                <li>
+                <li style={{padding: "0.5rem"}} onClick={toggleTheme}>
                   <Sun
                     className="sidebar-icon"
                     size={isSmallScreen ? 25 : 30}
@@ -88,7 +88,7 @@ const Sidebar = () => {
                   <a href="#">Modo claro</a>
                 </li>
               )}
-              <li>
+              <li style={{padding: "0.4rem"}}>
                 <div className="sidebar-greeting">
                   <div>
                     <img
