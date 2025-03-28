@@ -49,7 +49,7 @@ const Sidebar = () => {
         <nav className="container-sidebar-content-nav">
           <ul>
             <li>
-              <Link to="/home">
+              <Link to="/">
                 <House
                   className="sidebar-icon"
                   size={isSmallScreen ? 25 : 30}
