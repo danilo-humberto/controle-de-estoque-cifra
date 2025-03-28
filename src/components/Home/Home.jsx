@@ -6,7 +6,9 @@ import Statistic from "../../assets/statistic/Statistic";
 import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [horas, setHoras] = useState(new Date().getHours());
+  const [horas, setHoras] = useState(
+    String(new Date().getHours()).padStart(2, "0")
+  );
   const [minutos, setMinutos] = useState(
     String(new Date().getMinutes()).padStart(2, "0")
   );
@@ -15,7 +17,7 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const agora = new Date();
-      setHoras(agora.getHours());
+      setHoras(String(agora.getHours()).padStart(2, "0"));
       setMinutos(String(agora.getMinutes()).padStart(2, "0"));
     }, 1000); // Atualiza a cada segundo
 
