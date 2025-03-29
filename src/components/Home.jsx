@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./Home.css";
-import Cards from "../../assets/cards/Cards";
+import Cards from "../assets/Cards";
 import { Package, Users, Voicemail } from "lucide-react";
-import Statistic from "../../assets/statistic/Statistic";
+import Statistic from "../assets/Statistic";
 import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -25,16 +24,15 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container-home">
-      <div className="container-home-content">
-        <div className="container-home-content-cards">
-          <div>
+    <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
+      <div className="w-full h-full">
+        <div className="w-full flex justify-between mt-4">
+          <div className="flex gap-4">
             <Link to="/funcionarios">
               <Cards
                 span="Funcionários"
                 icon={<Users size={40} />}
-                color="var(--sky-700)"
-                hoverColor="var(--sky-800)"
+                color="bg-sky-700 hover:bg-sky-800"
                 onClick={() => navigate("/funcionarios")}
               />
             </Link>
@@ -42,8 +40,7 @@ const Home = () => {
               <Cards
                 span="Equipamentos"
                 icon={<Package size={40} />}
-                color="var(--emerald-700)"
-                hoverColor="var(--emerald-800)"
+                color="bg-emerald-700 hover:bg-emerald-800"
                 route="/equipamentos"
               />
             </Link>
@@ -51,30 +48,29 @@ const Home = () => {
               <Cards
                 span="Linhas"
                 icon={<Voicemail size={40} />}
-                color="var(--pink-700)"
-                hoverColor="var(--pink-800)"
+                color="bg-pink-700 hover:bg-pink-800"
                 route="/linhas"
               />
             </Link>
           </div>
-          <div className="container-home-content-cards-hours">
-            <div>
-              <div>
-                <span>{horas}</span>
-                <p>Horas</p>
+          <div className="bg-yellow-400 w-48 h-24 rounded-lg select-none flex items-center justify-center font-bold gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col items-center mt-2">
+                <span className="text-xl">{horas}</span>
+                <p className="text-xs uppercase font-light">Horas</p>
               </div>
-              <span>:</span>
-              <div>
-                <span>{minutos}</span>
-                <p>Minutos</p>
+              <span className="text-2xl">:</span>
+              <div className="flex flex-col items-center mt-2">
+                <span className="text-xl">{minutos}</span>
+                <p className="text-xs uppercase font-light">Minutos</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="container-home-content-dash">
-          <div>teste1</div>
-          <div>
+        <div className="mt-8 flex gap-4 h-5/6">
+          <div className="bg-[var(--gray-700)] flex-[2] h-full rounded-lg">teste1</div>
+          <div className="bg-[var(--gray-700)] flex-1 h-full rounded-lg">
             <Statistic />
           </div>
         </div>

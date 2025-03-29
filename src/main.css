@@ -1,15 +1,20 @@
-*, *::after, *::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Roboto", sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-ul, ol {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
+@layer base {
+    *,
+    *::after,
+    *::before {
+      @apply m-0 p-0 box-border;
+      font-family: "Roboto", sans-serif;
+    }
+  
+    ul, ol {
+      @apply list-none;
+    }
+  
+    a {
+      @apply no-underline text-inherit
+    }
+  }

@@ -1,13 +1,11 @@
 import React from "react";
-import "./app.css";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Home from "./components/Home/Home";
+import Sidebar from "./components/Sidebar";
 import Router from "./Router";
 
 const App = () => {
   return (
-    <div className="container">
-      <div className="content">
+    <div className="w-screen h-screen p-4 bg-[var(--gray-700)]">
+      <div className="w-full h-full bg-[var(--gray-800)] rounded-lg flex">
         <Sidebar />
         <Router />
       </div>
