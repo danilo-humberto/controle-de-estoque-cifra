@@ -1,8 +1,9 @@
 .container-home {
     width: 80%;
-    height: 85%;
+    height: 100%;
     padding: 1rem;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .container-home-content {
@@ -63,7 +64,7 @@
     margin-top: 2rem;
     display: flex;
     gap: 1rem;
-    height: 97%;
+    height: 85%;
 }
 
 .container-home-content-dash > div:nth-child(1) {
