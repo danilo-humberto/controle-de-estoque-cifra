@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const isSmallScreen = useMediaQuery({ maxWidth: 1400 });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isLightMode, setIsLightMode] = useState(false);
 
   const currentHour = new Date().getHours();
@@ -59,7 +59,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/"
-                className={`flex items-center gap-2 p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : ""}`}
+                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <House
                   className="text-[var(--gray-400)]"
@@ -77,7 +77,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/funcionarios"
-                className={`flex items-center gap-2 p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : ""}`}
+                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <Users
                   className="text-[var(--gray-400)]"
@@ -95,7 +95,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/equipamentos"
-                className={`flex items-center gap-2 p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : ""}`}
+                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <Package
                   className="text-[var(--gray-400)]"
@@ -113,7 +113,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/linhas"
-                className={`flex items-center gap-2 p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : ""}`}
+                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <Voicemail
                   className="text-[var(--gray-400)]"
@@ -133,8 +133,8 @@ const Sidebar = () => {
             <ul className="flex flex-col gap-4">
               <li
                 onClick={toggleTheme}
-                className={`flex items-center gap-2 p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md cursor-pointer transition-all duration-300 ${
-                  isCollapsed ? "gap-0" : ""}`}
+                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md cursor-pointer transition-all duration-300 ${
+                  isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 {isLightMode ? (
                   <Moon
@@ -155,8 +155,8 @@ const Sidebar = () => {
                   {isLightMode ? "Modo escuro" : "Modo claro"}
                 </span>
               </li>
-              <li className="flex items-center gap-2 p-1 text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md">
-                <div className="flex items-center gap-2">
+              <li className={`flex items-center p-[0.35rem] h-12 w-full transition-all duration-300 text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}>
+                <div className={`flex items-center ${isCollapsed ? "gap-0" : "gap-2"}`}>
                   <div className="w-8 h-8 rounded-full border border-[var(--gray-200)] flex items-center justify-center p-[1px]">
                     <img
                       src="https://thumbs.dreamstime.com/b/vetor-de-%C3%ADcone-perfil-do-avatar-padr%C3%A3o-foto-usu%C3%A1rio-m%C3%ADdia-social-183042379.jpg"
@@ -165,8 +165,8 @@ const Sidebar = () => {
                     />
                   </div>
                   <p
-                    className={`text-[var(--gray-300)] transition-all duration-300 ${
-                      isCollapsed ? "text-[0rem]" : "text-base"
+                    className={`text-[var(--gray-300)] transition-all duration-300 overflow-hidden ${
+                      isCollapsed ? "text-[0px]" : "text-base"
                     }`}
                   >
                     {greeting}, Eduardo
@@ -174,7 +174,7 @@ const Sidebar = () => {
                 </div>
               </li>
               <li>
-                <Link className={`flex items-center gap-2 p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${isCollapsed ? "gap-0" : ""}`} to="/sair">
+                <Link className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${isCollapsed ? "gap-0" : "gap-2"}`} to="/sair">
                   <LogOut
                     className="text-red-500"
                     size={isSmallScreen ? 25 : 30}
@@ -193,7 +193,7 @@ const Sidebar = () => {
             <ul className="flex flex-col gap-4">
               <li
                 onClick={toggleTheme}
-                className={`flex items-center gap-2 p-2 h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md cursor-pointer ${isCollapsed ? "gap-0" : ""}`}
+                className={`flex items-center p-2 h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md cursor-pointer ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 {isLightMode ? (
                   <Moon
@@ -210,7 +210,7 @@ const Sidebar = () => {
                   {isLightMode ? "Modo escuro" : "Modo claro"}
                 </span>
               </li>
-              <li className={`flex items-center gap-2 p-2 h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md ${isCollapsed ? "gap-0" : ""}`}>
+              <li className={`flex items-center p-2 h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}>
                 <LogIn
                   className="text-lime-500 transition-all duration-300"
                   size={isSmallScreen ? 25 : 30}
