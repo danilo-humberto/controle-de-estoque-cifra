@@ -36,11 +36,11 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`w-[300px] h-full border-r border-[var(--gray-500)] transition-all ease-in-out duration-300 ${
-        isCollapsed ? "w-[80px]" : "w-[300px]"
+      className={`h-full border-r border-[var(--gray-500)] transition-all ease-in-out duration-300 ${
+        isCollapsed ? "w-[80px]" : "xl:w-[250px] 2xl:w-[300px]"
       }`}
     >
-      <div className="flex flex-col p-4 gap-12 h-full">
+      <div className="flex flex-col p-4 gap-7 2xl:gap-12 h-full">
         <div
           className="flex items-center gap-2 cursor-pointer h-12 w-full transition-all duration-300"
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -55,11 +55,11 @@ const Sidebar = () => {
           </h1>
         </div>
         <nav className="flex flex-col justify-between h-full w-full">
-          <ul className="flex flex-col gap-4">
+          <ul className="flex flex-col xl:gap-1 2xl:gap-4">
             <li>
               <Link
                 to="/"
-                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
+                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <House
                   className="text-[var(--gray-400)]"
@@ -77,7 +77,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/funcionarios"
-                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
+                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <Users
                   className="text-[var(--gray-400)]"
@@ -95,7 +95,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/equipamentos"
-                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
+                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <Package
                   className="text-[var(--gray-400)]"
@@ -113,7 +113,7 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/linhas"
-                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
+                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 <Voicemail
                   className="text-[var(--gray-400)]"
@@ -130,10 +130,10 @@ const Sidebar = () => {
             </li>
           </ul>
           {isLoggedIn ? (
-            <ul className="flex flex-col gap-4">
+            <ul className="flex flex-col xl:gap-1 2xl:gap-4">
               <li
                 onClick={toggleTheme}
-                className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md cursor-pointer transition-all duration-300 ${
+                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md cursor-pointer transition-all duration-300 ${
                   isCollapsed ? "gap-0" : "gap-2"}`}
               >
                 {isLightMode ? (
@@ -174,7 +174,7 @@ const Sidebar = () => {
                 </div>
               </li>
               <li>
-                <Link className={`flex items-center p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${isCollapsed ? "gap-0" : "gap-2"}`} to="/sair">
+                <Link className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${isCollapsed ? "gap-0" : "gap-2"}`} to="/sair">
                   <LogOut
                     className="text-red-500"
                     size={isSmallScreen ? 25 : 30}

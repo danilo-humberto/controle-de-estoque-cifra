@@ -17,6 +17,7 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 import CountUp from "react-countup";
+import { Link } from "react-router-dom";
 
 const Equipamentos = () => {
   const chartPizzaData = [
@@ -70,21 +71,21 @@ const Equipamentos = () => {
   };
 
   return (
-    <div className="w-4/5 h-[90%] p-4 mx-auto">
+    <div className="w-4/5 h-[96%] p-4 mx-auto xl:overflow-y-scroll 2xl:overflow-hidden no-scrollbar">
       <div className="flex justify-between items-center text-[var(--gray-300)] h-12">
-        <h2 className="text-3xl font-bold">Dashboard</h2>
-        <a
-          href="#"
-          className="bg-[var(--gray-600)] hover:bg-[var(--gray-500)] py-3 px-4 rounded-md transition-all duration-300 "
+        <h2 className="xl:text-2xl 2xl:text-3xl font-bold">Dashboard de Equipamentos</h2>
+        <Link
+          to={"/tableEquipamentos"}
+          className="bg-[var(--gray-600)] hover:bg-[var(--gray-500)] xl:py-2 2xl:py-3 px-4 rounded-md transition-all duration-300 xl:text-sm 2xl:text-lg"
         >
           Ver Tabela
-        </a>
+        </Link>
       </div>
-      <div className="w-full h-full flex flex-col gap-6 mt-8">
+      <div className="w-full h-full flex flex-col gap-6 xl:mt-4 2xl:mt-8">
         <div className="flex gap-4">
           <Card className="w-2/4 bg-[var(--gray-600)] border-none">
             <CardHeader>
-              <CardTitle className="text-[var(--gray-300)]">
+              <CardTitle className="text-[var(--gray-300)] xl:text-base 2xl:text-2xl">
                 Quantidade por Equipamento
               </CardTitle>
             </CardHeader>
@@ -113,7 +114,7 @@ const Equipamentos = () => {
 
           <Card className="w-2/4 bg-[var(--gray-600)] border-none h-[346px]">
             <CardHeader>
-              <CardTitle className="text-[var(--gray-300)]">
+              <CardTitle className="text-[var(--gray-300)] xl:text-base 2xl:text-2xl">
                 Quantidade Total de Equipamentos
               </CardTitle>
             </CardHeader>
@@ -137,8 +138,8 @@ const Equipamentos = () => {
 
           <Card className="w-2/4 bg-[var(--gray-600)] border-none">
             <CardHeader>
-              <CardTitle className="text-[var(--gray-300)]">
-                Qunatidade de Equipamento por Status
+              <CardTitle className="text-[var(--gray-300)] xl:text-base 2xl:text-2xl">
+                Quantidade de Equipamento por Status
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -166,7 +167,7 @@ const Equipamentos = () => {
         <div className="w-full">
           <Card className="w-full h-full bg-[var(--gray-600)] border-none">
             <CardHeader>
-              <CardTitle className="text-[var(--gray-300)]">
+              <CardTitle className="text-[var(--gray-300)]  xl:text-base 2xl:text-2xl">
                 Quantidade de Equipamentos por Gerência
               </CardTitle>
             </CardHeader>
