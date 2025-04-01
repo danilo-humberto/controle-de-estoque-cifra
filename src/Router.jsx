@@ -5,6 +5,7 @@ import Funcionarios from './views/Funcionarios'
 import Linhas from './views/Linhas'
 import Equipamentos from './views/Equipamentos'
 import TableEquipamentos from './views/TableEquipamentos'
+import TableLinhas from './views/TableLinhas'
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
             <Route path="/equipamentos" element={<Equipamentos />} />
             <Route path="/linhas" element={<Linhas />} />
             <Route path="/tableEquipamentos" element={<TableEquipamentos />} />
+            <Route path="/tableLinhas" element={<TableLinhas />} />
         </Routes>
     </>
   )
