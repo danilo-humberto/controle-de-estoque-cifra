@@ -142,7 +142,7 @@ const TableEquipamentos = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-between items-center ">
+            <div className="flex justify-between pb-4 items-center sticky top-[4.5rem] z-10 bg-[var(--gray-800)]">
               <input
                 type="text"
                 placeholder="Pesquise ..."
@@ -166,11 +166,6 @@ const TableEquipamentos = () => {
                       </DialogDescription>
                     </DialogHeader>
                     <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
-                      <input
-                        type="text"
-                        placeholder="Status"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
                       <input
                         type="text"
                         placeholder="Aparelho"
@@ -231,9 +226,9 @@ const TableEquipamentos = () => {
                 </Dialog>
               </div>
             </div>
-            <div className="w-full h-full mt-4 border rounded-md border-[var(--gray-500)]">
+            <div className="w-full border rounded-md border-[var(--gray-500)]">
               <table className="w-full">
-                <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
+                <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]" >
                   <tr>
                     <th align="left" className="p-2">
                       <input
