@@ -31,19 +31,6 @@ const TableLinhas = () => {
     }
   };
 
-  const selecionarLinha = (id) => {
-    setDados((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, selecionado: !item.selecionado } : item
-      )
-    );
-  };
-
-  const selecionarTudo = (event) => {
-    const marcado = event.target.checked;
-    setDados((prev) => prev.map((item) => ({ ...item, selecionado: marcado })));
-  };
-
   return (
     <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
       <div className="w-full h-full rounded-md mt-4">
@@ -62,12 +49,11 @@ const TableLinhas = () => {
                   className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-300)] focus:border-[var(--gray-500)]"
                 />
                 <Select
-                  className="focus:ring-0"
                   onValueChange={handleSelectChange}
                   value={status}
                 >
-                  <SelectTrigger className="w-[140px] bg-transparent border-[var(--gray-700)] outline-none focus:border-[var(--gray-500)]">
-                    <SelectValue placeholder="Status"/>
+                  <SelectTrigger className="w-[140px] bg-transparent border-[var(--gray-700)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-300)]">
+                    <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
                     <SelectGroup>
