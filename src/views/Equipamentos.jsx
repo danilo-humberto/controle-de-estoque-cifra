@@ -112,7 +112,7 @@ const Equipamentos = () => {
             </CardContent>
           </Card>
 
-          <Card className="w-2/4 bg-[var(--gray-600)] border-none h-[346px]">
+          <Card className="w-2/4 bg-[var(--gray-600)] border-none 2xl:h-[354px] xl:h-[346px]">
             <CardHeader>
               <CardTitle className="text-[var(--gray-300)] xl:text-base 2xl:text-2xl">
                 Quantidade Total de Equipamentos
@@ -174,7 +174,7 @@ const Equipamentos = () => {
             <CardContent>
               <ChartContainer
                 config={chartBarConfig}
-                className="h-[19rem] w-full"
+                className="h-[18rem] w-full"
               >
                 <BarChart
                   accessibilityLayer

@@ -20,9 +20,9 @@ const Statistic = () => {
   return (
     <div className='w-full h-full p-4 text-[var(--gray-300)] overflow-hidden'>
       <h2 className='text-center text-lg font-semibold'>Estatística do Estoque</h2>
-      <div className='grid lg:grid-cols-2 md:grid-cols-3 justify-items-center lg:mt-12 md:mt-6'>
+      <div className='grid 2xl:grid-cols-2 xl:grid-cols-3 justify-items-center 2xl:mt-12 xl:mt-5'>
         {stats.map(({ icon, label, color, shadow }, index) => (
-          <div key={index} className='flex flex-col items-center gap-2 pb-8 last:pb-0'>
+          <div key={index} className='flex flex-col items-center gap-2 2xl:pb-8 xl:pb-4 last:pb-0'>
             <div className={`${color}`}>{React.cloneElement(icon, { size: isSmallScreen ? 30 : 40 })}</div>
             <p className='text-sm md:text-base'>{label}</p>
             <span className='text-xl font-bold'>1</span>

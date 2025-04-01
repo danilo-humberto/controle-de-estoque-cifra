@@ -24,7 +24,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
+    <div className="w-4/5 h-full px-4 pb-4 mt-4 mx-auto overflow-hidden">
       <div className="w-full h-full">
         <div className="w-full flex justify-between mt-4">
           <div className="flex gap-4">
@@ -69,8 +69,8 @@ const Home = () => {
         </div>
 
         <div className="mt-8 flex gap-4 h-5/6">
-          <div className="bg-[var(--gray-700)] flex-[2] h-full rounded-lg">teste1</div>
-          <div className="bg-[var(--gray-700)] flex-1 h-full rounded-lg">
+          <div className="bg-[var(--gray-700)] flex-[2] xl:h-[85%] 2xl:h-[96%] rounded-lg">teste1</div>
+          <div className="bg-[var(--gray-700)] flex-1 xl:h-[85%] 2xl:h-[96%] rounded-lg">
             <Statistic />
           </div>
         </div>
