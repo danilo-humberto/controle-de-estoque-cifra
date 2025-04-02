@@ -266,7 +266,7 @@ const Sidebar = () => {
                 </span>
               </li>
               <li
-                className={`flex items-center p-[0.35rem] h-12 w-full transition-all duration-300 text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md ${
+                className={`flex items-center p-[0.35rem] xl:ml-[0.1rem] h-12 w-full text-[var(--gray-300)] ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -293,7 +293,7 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link
-                  className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${
+                  className={`flex items-center xl:px-[0.7rem] xl:ml-[0.08rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${
                     isCollapsed ? "gap-0" : "gap-2"
                   }`}
                   to="/sair"
