@@ -10,6 +10,17 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const TableFuncionarios = () => {
   return (
@@ -72,28 +83,27 @@ const TableFuncionarios = () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
                     <Button variant="destructive" className="h-[38px] w-[78px]">
                       Deletar
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
-                    <DialogHeader>
-                      <DialogTitle className="text-[var(--gray-300)]">
-                        Você tem certeza que quer deletar esse funcionário ?
-                      </DialogTitle>
-                      <DialogDescription>
-                        Essa ação não pode ser revertida!
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button variant="destructive" type="submit">
-                        Deletar
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-[var(--gray-300)]">
+                        Você tem certeza que quer apagar esse funcionário ?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Essa ação não pode ser revertida.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction>Confirmar</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
             <div className="w-full border rounded-md border-[var(--gray-500)]">

@@ -10,6 +10,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const TableEquipamentos = () => {
   const [dados, setDados] = useState([
@@ -146,7 +157,7 @@ const TableEquipamentos = () => {
               <input
                 type="text"
                 placeholder="Pesquise ..."
-                className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-300)] focus:border-[var(--gray-500)]"
+                className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
               />
               <div className="flex items-center gap-4">
                 <Dialog>
@@ -202,28 +213,27 @@ const TableEquipamentos = () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
                     <Button variant="destructive" className="h-[38px] w-[78px]">
                       Deletar
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
-                    <DialogHeader>
-                      <DialogTitle className="text-[var(--gray-300)]">
-                        Você tem certeza que quer deletar essa linha ?
-                      </DialogTitle>
-                      <DialogDescription>
-                        Essa ação não pode ser revertida!
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button variant="destructive" type="submit">
-                        Deletar
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-[var(--gray-300)]">
+                        Você tem certeza que quer apagar esse equipamento ?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Essa ação não pode ser revertida.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction>Confirmar</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
             <div className="w-full border rounded-md border-[var(--gray-500)]">
