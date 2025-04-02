@@ -23,7 +23,7 @@ const Statistic = () => {
 
   const stats = [
     { icon: <Users />, label: "Funcionários", color: "text-sky-700", shadow: "bg-sky-700", quantidade: 1 },
-    { icon: <Voicemail />, label: "Linhas", color: "text-pink-700", shadow: "bg-pink-700", quantidade: linhas.length },
+    { icon: <Voicemail />, label: "Linhas", color: "text-pink-700", shadow: "bg-pink-700", quantidade: linhas ? linhas.length : 0 },
     { icon: <Smartphone />, label: "Celulares", color: "text-emerald-700", shadow: "bg-emerald-700", quantidade: 1 },
     { icon: <Laptop />, label: "Notebooks", color: "text-purple-700", shadow: "bg-purple-700", quantidade: 1 },
     { icon: <Tablet />, label: "Tablet", color: "text-purple-300", shadow: "bg-purple-300", quantidade: 1 },
