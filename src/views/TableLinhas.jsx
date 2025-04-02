@@ -31,6 +31,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { getLinhas } from "@/functions/api";
 import React, { useEffect, useState } from "react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 
 const TableLinhas = () => {
   const [status, setStatus] = useState("");
@@ -200,8 +201,50 @@ const TableLinhas = () => {
               <div className="flex items-center gap-4">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] w-[78px] text-[var(--gray-200)]">
-                      Editar
+                    <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
+                      <Plus />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
+                    <DialogHeader>
+                      <DialogTitle className="text-[var(--gray-300)]">
+                        Adicionar linha
+                      </DialogTitle>
+                      <DialogDescription>
+                        Preencha os campos abaixo e clique em salvar para adicionar uma nova linha.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
+                      <input
+                        type="text"
+                        placeholder="Linha"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Operadora"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Status"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                    </form>
+                    <DialogFooter>
+                      <Button
+                        className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
+                        type="submit"
+                      >
+                        Salvar
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
+                      <Pencil />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
@@ -243,8 +286,8 @@ const TableLinhas = () => {
                 </Dialog>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="destructive" className="h-[38px] w-[78px]">
-                      Deletar
+                    <Button variant="destructive" className="h-[38px]">
+                      <Trash2 />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">

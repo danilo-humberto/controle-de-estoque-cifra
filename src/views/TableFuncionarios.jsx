@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 
 const TableFuncionarios = () => {
   return (
@@ -34,16 +35,59 @@ const TableFuncionarios = () => {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between pb-4 items-center sticky top-[4.5rem] z-10 bg-[var(--gray-800)]">
-                <input
-                  type="text"
-                  placeholder="Pesquise ..."
-                  className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
-                />
+              <input
+                type="text"
+                placeholder="Pesquise ..."
+                className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
+              />
               <div className="flex items-center gap-4">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] w-[78px] text-[var(--gray-200)]">
-                      Editar
+                    <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
+                      <Plus />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
+                    <DialogHeader>
+                      <DialogTitle className="text-[var(--gray-300)]">
+                        Adicionar funcionário
+                      </DialogTitle>
+                      <DialogDescription>
+                        Preencha os campos abaixo e clique em salvar para
+                        adicionar uma novo funcionário.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
+                      <input
+                        type="text"
+                        placeholder="Nome"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="CPF"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Gerência"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                    </form>
+                    <DialogFooter>
+                      <Button
+                        className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
+                        type="submit"
+                      >
+                        Salvar
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
+                      <Pencil />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
@@ -52,7 +96,7 @@ const TableFuncionarios = () => {
                         Editar funcionário
                       </DialogTitle>
                       <DialogDescription>
-                        Atualize os dados da linha. Clique em salvar quando
+                        Atualize os dados do funcionário. Clique em salvar quando
                         finalizar.
                       </DialogDescription>
                     </DialogHeader>
@@ -85,8 +129,8 @@ const TableFuncionarios = () => {
                 </Dialog>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="destructive" className="h-[38px] w-[78px]">
-                      Deletar
+                    <Button variant="destructive" className="h-[38px]">
+                      <Trash2 />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
@@ -120,9 +164,9 @@ const TableFuncionarios = () => {
                         "
                       />
                     </th>
-                    <th align="left">Número</th>
-                    <th align="left">Operadora</th>
-                    <th align="left">Status</th>
+                    <th align="left">Nome</th>
+                    <th align="left">CPF</th>
+                    <th align="left">Gerência</th>
                   </tr>
                 </thead>
                 <tbody className="text-[var(--gray-300)]">
@@ -137,9 +181,9 @@ const TableFuncionarios = () => {
                         "
                       />
                     </td>
-                    <td>Número</td>
-                    <td>Operadora</td>
-                    <td>Status</td>
+                    <td>Nome</td>
+                    <td>CPF</td>
+                    <td>Gerência</td>
                   </tr>
                 </tbody>
               </table>
@@ -148,7 +192,7 @@ const TableFuncionarios = () => {
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TableFuncionarios
+export default TableFuncionarios;

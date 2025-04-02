@@ -21,6 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 
 const TableEquipamentos = () => {
   const [dados, setDados] = useState([
@@ -162,18 +163,71 @@ const TableEquipamentos = () => {
               <div className="flex items-center gap-4">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] w-[78px] text-[var(--gray-200)]">
-                      Editar
+                    <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
+                      <Plus />
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
                     <DialogHeader>
                       <DialogTitle className="text-[var(--gray-300)]">
-                        Editar linha
+                        Adicionar equipamento
                       </DialogTitle>
                       <DialogDescription>
-                        Atualize os dados da linha. Clique em salvar quando
-                        finalizar.
+                        Preencha os campos abaixo e clique em salvar para
+                        adicionar um novo equipamento.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
+                      <input
+                        type="text"
+                        placeholder="Aparelho"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Modelo"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="IMEI 1"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="IMEI 2"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Tombamento"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                    </form>
+                    <DialogFooter>
+                      <Button
+                        className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
+                        type="submit"
+                      >
+                        Salvar
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
+                      <Pencil />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
+                    <DialogHeader>
+                      <DialogTitle className="text-[var(--gray-300)]">
+                        Editar equipamento
+                      </DialogTitle>
+                      <DialogDescription>
+                        Atualize os dados do equipamento. Clique em salvar
+                        quando finalizar.
                       </DialogDescription>
                     </DialogHeader>
                     <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
@@ -215,8 +269,8 @@ const TableEquipamentos = () => {
                 </Dialog>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="destructive" className="h-[38px] w-[78px]">
-                      Deletar
+                    <Button variant="destructive" className="h-[38px]">
+                      <Trash2 />
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
@@ -238,7 +292,7 @@ const TableEquipamentos = () => {
             </div>
             <div className="w-full border rounded-md border-[var(--gray-500)]">
               <table className="w-full">
-                <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]" >
+                <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
                   <tr>
                     <th align="left" className="p-2">
                       <input
