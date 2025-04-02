@@ -12,6 +12,7 @@ const Home = () => {
     String(new Date().getMinutes()).padStart(2, "0")
   );
   const navigate = useNavigate();
+  const [linhas, setLinhas] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -53,7 +54,7 @@ const Home = () => {
               />
             </Link>
           </div>
-          <div className="bg-yellow-400 w-48 h-24 rounded-lg select-none flex items-center justify-center font-bold gap-4">
+          <div className="bg-yellow-400 w-48 2xl:h-24 xl:h-20 rounded-lg select-none flex items-center justify-center font-bold gap-4">
             <div className="flex items-center gap-4">
               <div className="flex flex-col items-center mt-2">
                 <span className="text-xl">{horas}</span>
@@ -68,9 +69,11 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex gap-4 h-5/6">
-          <div className="bg-[var(--gray-700)] flex-[2] xl:h-[85%] 2xl:h-[96%] rounded-lg">teste1</div>
-          <div className="bg-[var(--gray-700)] flex-1 xl:h-[85%] 2xl:h-[96%] rounded-lg">
+        <div className="mt-5 flex gap-4 h-5/6">
+          <div className="bg-[var(--gray-700)] flex-[2] xl:h-[90%] 2xl:h-[96%] rounded-lg">
+            teste1
+          </div>
+          <div className="bg-[var(--gray-700)] flex-1 xl:h-[90%] 2xl:h-[96%] rounded-lg">
             <Statistic />
           </div>
         </div>
