@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Pie,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/chart";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
+import { getEquipamentos } from "@/functions/api";
 
 const Equipamentos = () => {
   const chartPizzaData = [
@@ -69,6 +70,17 @@ const Equipamentos = () => {
       color: "hsl(var(--chart-1))",
     },
   };
+
+  const [equip, setEquip] = useState([]);
+
+  useEffect(() => {
+    const getAllEquipamentos = async () => {
+      const response = await getEquipamentos();
+      setEquip(response)
+    }
+
+    getAllEquipamentos()
+  }, [])
 
   return (
     <div className="w-4/5 h-[96%] p-4 mx-auto xl:overflow-y-scroll 2xl:overflow-hidden no-scrollbar">
@@ -125,7 +137,7 @@ const Equipamentos = () => {
                     <span>
                       <CountUp 
                         start={0}
-                        end={400}
+                        end={equip.length}
                         duration={2}
                         separator=","
                       />

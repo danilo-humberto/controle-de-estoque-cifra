@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { BringToFront, Laptop, MonitorCheck, Printer, Smartphone, Tablet, Users, Voicemail } from 'lucide-react'
 import { useMediaQuery } from 'react-responsive'
-import { getLinhas } from '@/functions/api';
+import { getFuncionarios, getLinhas } from '@/functions/api';
 
 const Statistic = () => {
 
   const [linhas, setLinhas] = useState([]);
+  const [func, setFunc] = useState([]);
   const isSmallScreen = useMediaQuery({ maxWidth: 1400})
 
   useEffect(() => {
-    const buscarLinhas = async () => {
+    const buscarAll = async () => {
       try {
-        const dados = await getLinhas();
-        setLinhas(dados);
+        const dadosLinhas = await getLinhas();
+        const dadosFunc = await getFuncionarios();
+        setLinhas(dadosLinhas);
+        setFunc(dadosFunc)
       } catch (error) {
         console.log(error);
       }
     };
 
-    buscarLinhas();
+    buscarAll();
   }, []);
 
   const stats = [
-    { icon: <Users />, label: "Funcionários", color: "text-sky-700", shadow: "bg-sky-700", quantidade: 1 },
+    { icon: <Users />, label: "Funcionários", color: "text-sky-700", shadow: "bg-sky-700", quantidade: func ? func.length : 0 },
     { icon: <Voicemail />, label: "Linhas", color: "text-pink-700", shadow: "bg-pink-700", quantidade: linhas ? linhas.length : 0 },
     { icon: <Smartphone />, label: "Celulares", color: "text-emerald-700", shadow: "bg-emerald-700", quantidade: 1 },
     { icon: <Laptop />, label: "Notebooks", color: "text-purple-700", shadow: "bg-purple-700", quantidade: 1 },

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,117 +22,26 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Plus, Trash2 } from "lucide-react";
+import { getEquipamentos, postEquipamentos } from "@/functions/api";
+import { useToast } from "@/hooks/use-toast";
 
 const TableEquipamentos = () => {
-  const [dados, setDados] = useState([
-    {
-      id: 1,
-      aparelho: "Smartphone",
-      modelo: "Samsung Galaxy S21",
-      imei1: "123456789012345",
-      imei2: "987654321098765",
-      tombamento: "001",
-    },
-    {
-      id: 2,
-      aparelho: "Notebook",
-      modelo: "Lenovo Ideapad",
-      imei1: "234567890123456",
-      imei2: "876543210987654",
-      tombamento: "002",
-    },
-    {
-      id: 3,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 4,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 5,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 6,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 7,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 8,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 9,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 10,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 11,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 12,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-    {
-      id: 13,
-      aparelho: "Tablet",
-      modelo: "iPad Pro",
-      imei1: "345678901234567",
-      imei2: "765432109876543",
-      tombamento: "003",
-    },
-  ]);
+  const [equip, setEquip] = useState([]);
+  const [equipFiltrado, setEquipFiltrado] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const { toast } = useToast();
+
+  // PARA CADASTRAR
+
+  const [equipamento, setEquipamento] = useState("");
+  const [modelo, setModelo] = useState("");
+  const [imei1, setImei1] = useState("");
+  const [imei2, setImei2] = useState("");
+  const [tombamento, setTombamento] = useState("");
 
   const selecionarLinha = (id) => {
-    setDados((prev) =>
+    setEquip((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, selecionado: !item.selecionado } : item
       )
@@ -141,7 +50,67 @@ const TableEquipamentos = () => {
 
   const selecionarTudo = (event) => {
     const marcado = event.target.checked;
-    setDados((prev) => prev.map((item) => ({ ...item, selecionado: marcado })));
+    setEquip((prev) => prev.map((item) => ({ ...item, selecionado: marcado })));
+  };
+
+  const buscarEquip = async () => {
+    try {
+      const dados = await getEquipamentos();
+      setEquip(dados);
+      setEquipFiltrado(dados);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    buscarEquip();
+  }, []);
+
+  useEffect(() => {
+    const result = equip.filter((equip) => {
+      const matchesSearch =
+        equip.equipamento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        equip.modelo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        equip.imei_serie.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        equip.tombamento.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        equip.imei2.toLowerCase().includes(searchTerm.toLowerCase());
+
+      return matchesSearch;
+    });
+
+    setEquipFiltrado(result);
+  }, [equip, searchTerm]);
+
+  const handleCadastro = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("equipamento", equipamento);
+      formData.append("modelo", modelo);
+      formData.append("imei_serie", imei1);
+      formData.append("imei2", imei2);
+      formData.append("tombamento", tombamento);
+
+      const response = await postEquipamentos(formData);
+      console.log(response);
+      toast({
+        title: response.mensagem,
+        variant: "sucess"
+      });
+      setEquipamento("");
+      setModelo("");
+      setImei1("");
+      setImei2("");
+      setTombamento("");
+      setIsOpen(false);
+
+      buscarEquip();
+    } catch (error) {
+      toast({
+        title: "Falha ao cadastrar. Tente novamente mais tarde!",
+      });
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -157,11 +126,13 @@ const TableEquipamentos = () => {
             <div className="flex justify-between pb-4 items-center sticky top-[4.5rem] z-10 bg-[var(--gray-800)]">
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Pesquise ..."
                 className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
               />
               <div className="flex items-center gap-4">
-                <Dialog>
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
                   <DialogTrigger asChild>
                     <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
                       <Plus />
@@ -180,26 +151,36 @@ const TableEquipamentos = () => {
                     <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
                       <input
                         type="text"
-                        placeholder="Aparelho"
+                        value={equipamento}
+                        onChange={(e) => setEquipamento(e.target.value)}
+                        placeholder="Equipamento"
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
+                        value={modelo}
+                        onChange={(e) => setModelo(e.target.value)}
                         placeholder="Modelo"
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
-                        placeholder="IMEI 1"
+                        value={imei1}
+                        onChange={(e) => setImei1(e.target.value)}
+                        placeholder="IMEI 1 / Série"
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
+                        value={imei2}
+                        onChange={(e) => setImei2(e.target.value)}
                         placeholder="IMEI 2"
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
+                        value={tombamento}
+                        onChange={(e) => setTombamento(e.target.value)}
                         placeholder="Tombamento"
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
@@ -208,6 +189,7 @@ const TableEquipamentos = () => {
                       <Button
                         className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
                         type="submit"
+                        onClick={handleCadastro}
                       >
                         Salvar
                       </Button>
@@ -298,7 +280,7 @@ const TableEquipamentos = () => {
                       <input
                         type="checkbox"
                         onChange={selecionarTudo}
-                        checked={dados.every((item) => item.selecionado)}
+                        checked={equip.every((item) => item.selecionado)}
                         className="
                           appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
                           relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
@@ -306,38 +288,46 @@ const TableEquipamentos = () => {
                         "
                       />
                     </th>
-                    <th align="left">Aparelho</th>
+                    <th align="left">Equipamento</th>
                     <th align="left">Modelo</th>
-                    <th align="left">IMEI 1</th>
+                    <th align="left">IMEI 1 / Série</th>
                     <th align="left">IMEI 2</th>
                     <th align="left">Tombamento</th>
                   </tr>
                 </thead>
                 <tbody className="text-[var(--gray-300)]">
-                  {dados.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-b border-[var(--gray-500)] text-sm"
-                    >
-                      <td className="p-2">
-                        <input
-                          type="checkbox"
-                          checked={item.selecionado}
-                          onChange={() => selecionarLinha(item.id)}
-                          className="
-                            appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
-                            relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
-                            checked:before:block before:hidden checked:hover:bg-[var(--gray-300)]
-                          "
-                        />
+                  {equipFiltrado && equipFiltrado.length > 0 ? (
+                    equipFiltrado.map((item, index) => (
+                      <tr
+                        key={index}
+                        className="border-b border-[var(--gray-500)] text-sm"
+                      >
+                        <td className="p-2">
+                          <input
+                            type="checkbox"
+                            checked={item.selecionado}
+                            onChange={() => selecionarLinha(item.id)}
+                            className="
+                              appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
+                              relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
+                              checked:before:block before:hidden checked:hover:bg-[var(--gray-300)]
+                            "
+                          />
+                        </td>
+                        <td>{item.equipamento}</td>
+                        <td>{item.modelo}</td>
+                        <td>{item.imei_serie}</td>
+                        <td>{item.imei2}</td>
+                        <td>{item.tombamento}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={6} align="center" className="text-sm p-2">
+                        Nenhum equipamento encontrado!
                       </td>
-                      <td>{item.aparelho}</td>
-                      <td>{item.modelo}</td>
-                      <td>{item.imei1}</td>
-                      <td>{item.imei2}</td>
-                      <td>{item.tombamento}</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>

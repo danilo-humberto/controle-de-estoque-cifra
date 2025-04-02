@@ -12,7 +12,6 @@ const Home = () => {
     String(new Date().getMinutes()).padStart(2, "0")
   );
   const navigate = useNavigate();
-  const [linhas, setLinhas] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
