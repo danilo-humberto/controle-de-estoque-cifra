@@ -34,6 +34,16 @@ export const getEquipamentos = async () => {
     }
 }
 
+export const getAllUnidades = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/unidades`)
+        return response.data
+    } catch (error) {
+        console.error("Erro ao buscar dados", error)
+        throw error;
+    }
+}
+
 // POST ROUTES
 export const postFuncionarios = async (dados) => {
     try {

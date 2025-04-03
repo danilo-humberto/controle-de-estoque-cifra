@@ -21,14 +21,28 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { getFuncionarios, postFuncionarios } from "@/functions/api";
+import {
+  getAllUnidades,
+  getFuncionarios,
+  postFuncionarios,
+} from "@/functions/api";
+import { Separator } from "@/components/ui/separator";
 
 const TableFuncionarios = () => {
   const [func, setFunc] = useState([]);
   const [funcFiltrado, setFuncFiltrado] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [unidades, setUnidades] = useState([]);
 
   // PARA CADASTRAR
 
@@ -38,19 +52,56 @@ const TableFuncionarios = () => {
   const [nome, setNome] = useState("");
   const [regiao, setRegiao] = useState("");
 
-  useEffect(() => {
-    const buscarFunc = async () => {
-      try {
-        const dados = await getFuncionarios();
-        setFunc(dados);
-        setFuncFiltrado(dados);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const buscarFunc = async () => {
+    try {
+      const dados = await getFuncionarios();
+      setFunc(dados);
+      setFuncFiltrado(dados);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const buscarUnidades = async () => {
+    try {
+      const dados = await getAllUnidades();
+      setUnidades(dados);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleContratoChange = (value) => {
+    setContrato(value === "limpar" ? "" : value);
+    setGerencia("");
+    setRegiao("");
+  };
+
+  const handleRegiaoChange = (value) => {
+    setRegiao(value === "limpar" ? "" : value);
+    setGerencia("");
+  };
+
+  const handleGerenciaChange = (value) => {
+    setGerencia(value === "limpar" ? "" : value);
+  };
+
+  const handleCpfChange = (e) => {
+    let valor = e.target.value.replace(/\D/g, "");
+
+    if (valor.length > 11) valor = valor.slice(0, 11);
+
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+    setCpf(valor);
+  };
+
+  useEffect(() => {
     buscarFunc();
-  }, [funcFiltrado]);
+    buscarUnidades();
+  }, []);
 
   useEffect(() => {
     const result = func.filter((func) => {
@@ -77,7 +128,14 @@ const TableFuncionarios = () => {
 
       const response = await postFuncionarios(formData);
       console.log(response.mensagem);
+      setNome("");
+      setCpf("");
+      setContrato("");
+      setRegiao("");
+      setGerencia("");
       setIsOpen(false);
+
+      buscarFunc();
     } catch (error) {
       console.log("Erro ao cadastrar");
       setIsOpen(false);
@@ -119,7 +177,151 @@ const TableFuncionarios = () => {
                       </DialogTitle>
                       <DialogDescription>
                         Preencha os campos abaixo e clique em salvar para
-                        adicionar uma novo funcionário.
+                        adicionar um novo funcionário.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form
+                      method="POST"
+                      className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2"
+                    >
+                      <Select onValueChange={handleContratoChange}>
+                        <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                          <SelectValue placeholder="Contrato" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                          <SelectGroup>
+                            {unidades.map((unidade) => (
+                              <SelectItem
+                                key={unidade.contrato}
+                                value={unidade.contrato}
+                              >
+                                {unidade.contrato}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                          <Separator className="bg-[var(--gray-500)]" />
+                          <SelectGroup>
+                            <SelectItem
+                              value="limpar"
+                              disabled={!contrato}
+                              className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                                !contrato ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              Limpar
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Select onValueChange={handleRegiaoChange}>
+                        <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                          <SelectValue placeholder="Região" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                          <SelectGroup>
+                            {unidades
+                              .filter(
+                                (unidade) => unidade.contrato === contrato
+                              )
+                              .map((unidade) => (
+                                <SelectItem
+                                  key={unidade.regiao}
+                                  value={unidade.regiao}
+                                >
+                                  {unidade.regiao}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
+                          <Separator className="bg-[var(--gray-500)]" />
+                          <SelectGroup>
+                            <SelectItem
+                              value="limpar"
+                              disabled={!regiao}
+                              className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                                !regiao ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              Limpar
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Select onValueChange={handleGerenciaChange}>
+                        <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                          <SelectValue placeholder="Gerência" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                          <SelectGroup>
+                            {unidades
+                              .filter(
+                                (unidade) =>
+                                  unidade.contrato === contrato &&
+                                  unidade.regiao === regiao
+                              )
+                              .map((unidade) => (
+                                <SelectItem
+                                  key={unidade.gerencia}
+                                  value={unidade.gerencia}
+                                  className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
+                                >
+                                  {unidade.gerencia}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
+                          <Separator className="bg-[var(--gray-500)]" />
+                          <SelectGroup>
+                            <SelectItem
+                              value="limpar"
+                              disabled={!gerencia}
+                              className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                                !gerencia ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              Limpar
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <input
+                        type="text"
+                        value={cpf}
+                        onChange={handleCpfChange}
+                        placeholder="CPF"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
+                        placeholder="Nome"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                    </form>
+                    <DialogFooter>
+                      <Button
+                        className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
+                        type="submit"
+                        onClick={handleCadastro}
+                      >
+                        Salvar
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
+                      <Pencil />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
+                    <DialogHeader>
+                      <DialogTitle className="text-[var(--gray-300)]">
+                        Editar funcionário
+                      </DialogTitle>
+                      <DialogDescription>
+                        Atualize os dados do funcionário. Clique em salvar
+                        quando finalizar.
                       </DialogDescription>
                     </DialogHeader>
                     <form
@@ -159,50 +361,6 @@ const TableFuncionarios = () => {
                         value={regiao}
                         onChange={(e) => setRegiao(e.target.value)}
                         placeholder="Região"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                    </form>
-                    <DialogFooter>
-                      <Button
-                        className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
-                        type="submit"
-                        onClick={handleCadastro}
-                      >
-                        Salvar
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
-                      <Pencil />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-[var(--gray-800)] border-[var(--gray-400)]">
-                    <DialogHeader>
-                      <DialogTitle className="text-[var(--gray-300)]">
-                        Editar funcionário
-                      </DialogTitle>
-                      <DialogDescription>
-                        Atualize os dados do funcionário. Clique em salvar
-                        quando finalizar.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
-                      <input
-                        type="text"
-                        placeholder="Número"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Operadora"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                      <input
-                        type="text"
-                        placeholder="Status"
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                     </form>
