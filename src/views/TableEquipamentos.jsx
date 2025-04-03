@@ -24,6 +24,15 @@ import {
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { getEquipamentos, postEquipamentos } from "@/functions/api";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 const TableEquipamentos = () => {
   const [equip, setEquip] = useState([]);
@@ -31,6 +40,7 @@ const TableEquipamentos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
+  const [equipSelect, setEquipSelect] = useState("");
 
   // PARA CADASTRAR
 
@@ -63,6 +73,10 @@ const TableEquipamentos = () => {
     }
   };
 
+  const handleEquipChange = (value) => {
+    setEquipSelect(value === "limpar" ? "" : value);
+  };
+
   useEffect(() => {
     buscarEquip();
   }, []);
@@ -76,7 +90,11 @@ const TableEquipamentos = () => {
         equip.tombamento.toLowerCase().includes(searchTerm.toLowerCase()) ||
         equip.imei2.toLowerCase().includes(searchTerm.toLowerCase());
 
-      return matchesSearch;
+      const matchesEquip =
+        !equipSelect ||
+        equip.equipamento.toLowerCase() === equipSelect.toLowerCase();
+
+      return matchesSearch && matchesEquip;
     });
 
     setEquipFiltrado(result);
@@ -95,7 +113,7 @@ const TableEquipamentos = () => {
       console.log(response);
       toast({
         title: response.mensagem,
-        variant: "sucess"
+        variant: "sucess",
       });
       setEquipamento("");
       setModelo("");
@@ -124,13 +142,82 @@ const TableEquipamentos = () => {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between pb-4 items-center sticky top-[4.5rem] z-10 bg-[var(--gray-800)]">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Pesquise ..."
-                className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
-              />
+              <div className="flex items-center gap-4 w-full">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Pesquise ..."
+                  className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
+                />
+                <Select onValueChange={handleEquipChange} value={equipSelect}>
+                  <SelectTrigger className="w-[140px] bg-transparent border-[var(--gray-700)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                    <SelectValue placeholder="Equipamento" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                    <SelectGroup>
+                      <SelectItem
+                        value="celular"
+                        className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                      >
+                        Celular
+                      </SelectItem>
+                      <SelectItem
+                        value="tablet"
+                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
+                      >
+                        Tablet
+                      </SelectItem>
+                      <SelectItem
+                        value="impressora"
+                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
+                      >
+                        Impressora
+                      </SelectItem>
+                      <SelectItem
+                        value="desktop"
+                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
+                      >
+                        Desktop
+                      </SelectItem>
+                      <SelectItem
+                        value="notebook"
+                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
+                      >
+                        Notebook
+                      </SelectItem>
+                      <SelectItem
+                        value="acessorios"
+                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
+                      >
+                        Acessórios
+                      </SelectItem>
+                    </SelectGroup>
+                    <Separator className="bg-[var(--gray-500)]" />
+                    <SelectGroup>
+                      <SelectItem
+                        value="limpar"
+                        disabled={!equipSelect}
+                        className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                          !equipSelect ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        Limpar
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                <Button
+                  onClick={() => {
+                    setSearchTerm("");
+                    setEquipSelect("");
+                  }}
+                  className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]"
+                >
+                  Limpar filtros
+                </Button>
+              </div>
               <div className="flex items-center gap-4">
                 <Dialog open={isOpen} onOpenChange={setIsOpen}>
                   <DialogTrigger asChild>
@@ -276,7 +363,7 @@ const TableEquipamentos = () => {
               <table className="w-full">
                 <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
                   <tr>
-                    <th align="left" className="p-2">
+                    <th align="left" className="p-2 w-[30px]">
                       <input
                         type="checkbox"
                         onChange={selecionarTudo}
@@ -288,11 +375,11 @@ const TableEquipamentos = () => {
                         "
                       />
                     </th>
-                    <th align="left">Equipamento</th>
-                    <th align="left">Modelo</th>
-                    <th align="left">IMEI 1 / Série</th>
+                    <th align="left" className="w-[180px]">Equipamento</th>
+                    <th align="left" className="w-[200px]">Modelo</th>
+                    <th align="left" className="w-[210px]">IMEI 1 / Série</th>
                     <th align="left">IMEI 2</th>
-                    <th align="left">Tombamento</th>
+                    <th align="left" className="w-[180px]">Tombamento</th>
                   </tr>
                 </thead>
                 <tbody className="text-[var(--gray-300)]">
