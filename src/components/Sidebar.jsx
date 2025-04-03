@@ -1,4 +1,5 @@
 import {
+  ChartLine,
   House,
   LogIn,
   LogOut,
@@ -207,6 +208,42 @@ const Sidebar = () => {
                   }`}
                 >
                   Linhas
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/movimentacao"
+                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
+                  isCollapsed ? "gap-0" : "gap-2"
+                }`}
+              >
+                {isCollapsed ? (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <ChartLine
+                          className="text-[var(--gray-400)]"
+                          size={isSmallScreen ? 25 : 30}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                        <p className="text-[var(--gray-300)]">Movimentação</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : (
+                  <ChartLine
+                    className="text-[var(--gray-400)]"
+                    size={isSmallScreen ? 25 : 30}
+                  />
+                )}
+                <span
+                  className={`transition-all duration-300 ${
+                    isCollapsed ? "text-[0px]" : "text-base"
+                  }`}
+                >
+                  Movimentação
                 </span>
               </Link>
             </li>
