@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { BringToFront, Laptop, MonitorCheck, Printer, Smartphone, Tablet, Users, Voicemail } from 'lucide-react'
 import { useMediaQuery } from 'react-responsive'
-import { getEquipamentos, getFuncionarios, getLinhas } from '@/functions/api';
+import { getEquipamentos, getFuncionarios, getLinhas } from '@/data/api';
 
 const Statistic = () => {
 
   const [linhas, setLinhas] = useState([]);
   const [func, setFunc] = useState([]);
   const [equip, setEquip] = useState([]);
-  const [phone, setPhone] = useState([])
   const isSmallScreen = useMediaQuery({ maxWidth: 1400})
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const Statistic = () => {
   ];
 
   return (
-    <div className='w-full h-full p-4 text-[var(--gray-300)] overflow-hidden'>
+    <div className='w-full h-full text-[var(--gray-300)] overflow-hidden'>
       <h2 className='text-center text-lg font-semibold'>Estatística do Estoque</h2>
       <div className='grid 2xl:grid-cols-2 xl:grid-cols-3 justify-items-center 2xl:mt-8 xl:mt-5'>
         {stats.map(({ icon, label, color, shadow, quantidade }, index) => (

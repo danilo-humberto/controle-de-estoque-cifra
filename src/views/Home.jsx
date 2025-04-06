@@ -3,6 +3,7 @@ import Cards from "../assets/Cards";
 import { Package, Users, Voicemail } from "lucide-react";
 import Statistic from "../assets/Statistic";
 import { Link, useNavigate } from "react-router-dom";
+import Map from "@/assets/Map";
 
 const Home = () => {
   const [horas, setHoras] = useState(
@@ -69,10 +70,10 @@ const Home = () => {
         </div>
 
         <div className="mt-5 flex gap-4 h-5/6">
-          <div className="bg-[var(--gray-700)] flex-[2] xl:h-[90%] 2xl:h-[96%] rounded-lg">
-            teste1
+          <div className="bg-[var(--gray-700)] flex-[2] xl:h-[90%] 2xl:h-[96%] rounded-lg p-4">
+            <Map />
           </div>
-          <div className="bg-[var(--gray-700)] flex-1 xl:h-[90%] 2xl:h-[96%] rounded-lg">
+          <div className="bg-[var(--gray-700)] flex-1 xl:h-[90%] 2xl:h-[96%] rounded-lg p-4">
             <Statistic />
           </div>
         </div>
