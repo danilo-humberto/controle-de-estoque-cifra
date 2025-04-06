@@ -34,7 +34,7 @@ import {
   getAllUnidades,
   getFuncionarios,
   postFuncionarios,
-} from "@/functions/api";
+} from "@/data/api";
 import { Separator } from "@/components/ui/separator";
 
 const TableFuncionarios = () => {

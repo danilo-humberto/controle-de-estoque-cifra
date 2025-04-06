@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/chart";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
-import { getEquipamentos } from "@/functions/api";
+import { getEquipamentos } from "@/data/api";
 
 const Equipamentos = () => {
   const chartPizzaData = [

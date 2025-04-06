@@ -22,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { getEquipamentos, postEquipamentos } from "@/functions/api";
+import { getEquipamentos, postEquipamentos } from "@/data/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
