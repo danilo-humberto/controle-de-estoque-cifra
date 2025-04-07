@@ -72,3 +72,14 @@ export const postEquipamentos = async (dados) => {
         throw error;
     }
 }
+
+// DELETE ROUTES
+export const deleteEquipamento = async (imei1) => {
+    try {
+        const response = await axios.delete(`${API_URL}/equipamentos/deletar/${imei1}`)
+        return response.data
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error)
+        throw error;
+    }
+}
