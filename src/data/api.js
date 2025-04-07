@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = "http://192.168.15.61:5000"
+const API_URL = "http://192.168.15.71:5000"
 
 
 // GET ROUTES
