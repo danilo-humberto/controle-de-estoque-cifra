@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { getEquipamentos, postEquipamentos } from "@/data/api";
+import { deleteEquipamento, getEquipamentos, postEquipamentos } from "@/data/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -50,17 +50,12 @@ const TableEquipamentos = () => {
   const [imei2, setImei2] = useState("");
   const [tombamento, setTombamento] = useState("");
 
-  const selecionarLinha = (id) => {
+  const selecionarLinha = (imei1) => {
     setEquip((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, selecionado: !item.selecionado } : item
+        item.imei_serie === imei1 ? { ...item, selecionado: !item.selecionado } : item
       )
     );
-  };
-
-  const selecionarTudo = (event) => {
-    const marcado = event.target.checked;
-    setEquip((prev) => prev.map((item) => ({ ...item, selecionado: marcado })));
   };
 
   const buscarEquip = async () => {
@@ -138,6 +133,21 @@ const TableEquipamentos = () => {
     setImei1("");
     setImei2("");
     setTombamento("");
+  }
+
+  const equipamentoSelecionado = useMemo(() => {
+    const selecionados = equip.filter((item) => item.selecionado);
+    return selecionados
+  }, [equip])
+
+  const handleDelete = async () => {
+    try {
+      await deleteEquipamento(equipamentoSelecionado[0].imei_serie);
+
+      buscarEquip()
+    } catch {
+      console.log("erro")
+    }
   }
 
   return (
@@ -362,7 +372,7 @@ const TableEquipamentos = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction>Confirmar</AlertDialogAction>
+                      <AlertDialogAction onClick={handleDelete}>Confirmar</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -373,19 +383,10 @@ const TableEquipamentos = () => {
                 <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
                   <tr>
                     <th align="left" className="p-2 w-[30px]">
-                      <input
-                        type="checkbox"
-                        onChange={selecionarTudo}
-                        checked={equip.every((item) => item.selecionado)}
-                        className="
-                          appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
-                          relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
-                          checked:before:block before:hidden checked:hover:bg-[var(--gray-300)]
-                        "
-                      />
+                      xx
                     </th>
                     <th align="left" className="w-[180px]">Equipamento</th>
-                    <th align="left" className="w-[200px]">Modelo</th>
+                    <th align="left" className="w-[300px]">Modelo</th>
                     <th align="left" className="w-[210px]">IMEI 1 / Série</th>
                     <th align="left">IMEI 2</th>
                     <th align="left" className="w-[180px]">Tombamento</th>
@@ -398,11 +399,11 @@ const TableEquipamentos = () => {
                         key={index}
                         className="border-b border-[var(--gray-500)] text-sm"
                       >
-                        <td className="p-2">
+                        <td className="w-[50px] p-2">
                           <input
                             type="checkbox"
-                            checked={item.selecionado}
-                            onChange={() => selecionarLinha(item.id)}
+                            checked={!!item.selecionado}
+                            onChange={() => selecionarLinha(item.imei_serie)}
                             className="
                               appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
                               relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
