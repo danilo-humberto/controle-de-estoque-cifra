@@ -30,11 +30,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import {
-  getAllUnidades,
-  getFuncionarios,
-  postFuncionarios,
-} from "@/data/api";
+import { getAllUnidades, getFuncionarios, postFuncionarios } from "@/data/api";
 import { Separator } from "@/components/ui/separator";
 
 const TableFuncionarios = () => {
@@ -52,11 +48,16 @@ const TableFuncionarios = () => {
   const [nome, setNome] = useState("");
   const [regiao, setRegiao] = useState("");
 
+  // PARA FILTRAR
+  const [regioes, setRegioes] = useState([]);
+  const [gerencias, setGerencias] = useState([]);
+
   const buscarFunc = async () => {
     try {
       const dados = await getFuncionarios();
       setFunc(dados);
       setFuncFiltrado(dados);
+      console.log(dados)
     } catch (error) {
       console.log(error);
     }
@@ -66,6 +67,7 @@ const TableFuncionarios = () => {
     try {
       const dados = await getAllUnidades();
       setUnidades(dados);
+      console.log(dados);
     } catch (error) {
       console.log(error);
     }
@@ -73,13 +75,32 @@ const TableFuncionarios = () => {
 
   const handleContratoChange = (value) => {
     setContrato(value === "limpar" ? "" : value);
-    setGerencia("");
     setRegiao("");
+    setGerencia("");
+    setGerencias([]);
+
+    const regioesFiltradas = unidades
+      .filter((u) => u.nome === value)
+      .map((u) => u.nome_regiao);
+
+    const regioesUnicas = [...new Set(regioesFiltradas)];
+    setRegioes(regioesUnicas);
   };
 
   const handleRegiaoChange = (value) => {
     setRegiao(value === "limpar" ? "" : value);
     setGerencia("");
+
+    const gerenciasFiltradas = unidades
+      .filter(
+        (u) =>
+          u.nome.toLowerCase() === contrato.toLowerCase() &&
+          u.nome_regiao.toLowerCase() === value.toLowerCase()
+      )
+      .map((u) => u.nome_gerencia);
+
+    const gerenciasUnicas = [...new Set(gerenciasFiltradas)];
+    setGerencias(gerenciasUnicas);
   };
 
   const handleGerenciaChange = (value) => {
@@ -106,10 +127,10 @@ const TableFuncionarios = () => {
   useEffect(() => {
     const result = func.filter((func) => {
       const matchesSearch =
-        func.contrato.toLowerCase().includes(searchTerm.toLowerCase()) ||
         func.cpf.toLowerCase().includes(searchTerm.toLowerCase()) ||
         func.gerencia.toLowerCase().includes(searchTerm.toLowerCase()) ||
         func.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        func.contrato.toLowerCase().includes(searchTerm.toLowerCase()) ||
         func.regiao.toLowerCase().includes(searchTerm.toLowerCase());
 
       return matchesSearch;
@@ -136,11 +157,28 @@ const TableFuncionarios = () => {
       setIsOpen(false);
 
       buscarFunc();
-    } catch (error) {
+    } catch {
       console.log("Erro ao cadastrar");
       setIsOpen(false);
     }
   };
+
+  const contratosUnicos = Array.from(
+    new Map(
+      unidades.map((u) => [u.nome, { id: u.contratos_id, nome: u.nome }])
+    ).values()
+  );
+
+  const openChange = () => {
+    setIsOpen(!isOpen);
+    setNome("");
+    setCpf("");
+    setContrato("");
+    setRegiao("");
+    setRegioes([]);
+    setGerencia("");
+    setGerencias([]);
+  }
 
   return (
     <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
@@ -161,7 +199,7 @@ const TableFuncionarios = () => {
                 className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
               />
               <div className="flex items-center gap-4">
-                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <Dialog open={isOpen} onOpenChange={openChange}>
                   <DialogTrigger asChild>
                     <Button
                       className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]"
@@ -184,18 +222,36 @@ const TableFuncionarios = () => {
                       method="POST"
                       className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2"
                     >
-                      <Select onValueChange={handleContratoChange}>
+                      <input
+                        type="text"
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
+                        placeholder="Nome"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <input
+                        type="text"
+                        value={cpf}
+                        onChange={handleCpfChange}
+                        placeholder="CPF"
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                      />
+                      <Select
+                        value={contrato}
+                        onValueChange={handleContratoChange}
+                      >
                         <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
                           <SelectValue placeholder="Contrato" />
                         </SelectTrigger>
                         <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
                           <SelectGroup>
-                            {unidades.map((unidade) => (
+                            {contratosUnicos.map((contrato) => (
                               <SelectItem
-                                key={unidade.contrato}
-                                value={unidade.contrato}
+                                key={contrato.id}
+                                value={contrato.nome}
+                                className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
                               >
-                                {unidade.contrato}
+                                {contrato.nome}
                               </SelectItem>
                             ))}
                           </SelectGroup>
@@ -213,24 +269,21 @@ const TableFuncionarios = () => {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <Select onValueChange={handleRegiaoChange}>
+                      <Select value={regiao} onValueChange={handleRegiaoChange}>
                         <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
                           <SelectValue placeholder="Região" />
                         </SelectTrigger>
                         <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
                           <SelectGroup>
-                            {unidades
-                              .filter(
-                                (unidade) => unidade.contrato === contrato
-                              )
-                              .map((unidade) => (
-                                <SelectItem
-                                  key={unidade.regiao}
-                                  value={unidade.regiao}
-                                >
-                                  {unidade.regiao}
-                                </SelectItem>
-                              ))}
+                            {regioes.map((regiao) => (
+                              <SelectItem
+                                key={regiao}
+                                value={regiao}
+                                className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                              >
+                                {regiao}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                           <Separator className="bg-[var(--gray-500)]" />
                           <SelectGroup>
@@ -246,27 +299,24 @@ const TableFuncionarios = () => {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <Select onValueChange={handleGerenciaChange}>
+                      <Select
+                        value={gerencia}
+                        onValueChange={handleGerenciaChange}
+                      >
                         <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
                           <SelectValue placeholder="Gerência" />
                         </SelectTrigger>
                         <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
                           <SelectGroup>
-                            {unidades
-                              .filter(
-                                (unidade) =>
-                                  unidade.contrato === contrato &&
-                                  unidade.regiao === regiao
-                              )
-                              .map((unidade) => (
-                                <SelectItem
-                                  key={unidade.gerencia}
-                                  value={unidade.gerencia}
-                                  className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
-                                >
-                                  {unidade.gerencia}
-                                </SelectItem>
-                              ))}
+                            {gerencias.map((gerencia) => (
+                              <SelectItem
+                                key={gerencia}
+                                value={gerencia}
+                                className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                              >
+                                {gerencia}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                           <Separator className="bg-[var(--gray-500)]" />
                           <SelectGroup>
@@ -282,20 +332,6 @@ const TableFuncionarios = () => {
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <input
-                        type="text"
-                        value={cpf}
-                        onChange={handleCpfChange}
-                        placeholder="CPF"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                      <input
-                        type="text"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        placeholder="Nome"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
                     </form>
                     <DialogFooter>
                       <Button
