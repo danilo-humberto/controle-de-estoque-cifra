@@ -40,6 +40,7 @@ const TableLinhas = () => {
   const [linhasFiltradas, setLinhasFiltradas] = useState([]);
   const [selectedLinhas, setSelectedLinhas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleStatusChange = (value) => {
     setStatus(value === "limpar" ? "" : value);
@@ -94,6 +95,10 @@ const TableLinhas = () => {
     });
     setLinhasFiltradas(resultados);
   }, [searchTerm, linhas, status, operadora]);
+
+  const openChange = () => {
+    setIsOpen(!isOpen);
+  }
 
   return (
     <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
@@ -199,7 +204,7 @@ const TableLinhas = () => {
                 </Button>
               </div>
               <div className="flex items-center gap-4">
-                <Dialog>
+                <Dialog open={isOpen} onOpenChange={openChange}>
                   <DialogTrigger asChild>
                     <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
                       <Plus />

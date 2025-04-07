@@ -98,7 +98,7 @@ const TableEquipamentos = () => {
     });
 
     setEquipFiltrado(result);
-  }, [equip, searchTerm]);
+  }, [equip, equipSelect, searchTerm]);
 
   const handleCadastro = async () => {
     try {
@@ -123,13 +123,22 @@ const TableEquipamentos = () => {
       setIsOpen(false);
 
       buscarEquip();
-    } catch (error) {
+    } catch {
       toast({
         title: "Falha ao cadastrar. Tente novamente mais tarde!",
       });
       setIsOpen(false);
     }
   };
+
+  const openChange = () => {
+    setIsOpen(false);
+    setEquipamento("");
+    setModelo("");
+    setImei1("");
+    setImei2("");
+    setTombamento("");
+  }
 
   return (
     <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
@@ -219,7 +228,7 @@ const TableEquipamentos = () => {
                 </Button>
               </div>
               <div className="flex items-center gap-4">
-                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <Dialog open={isOpen} onOpenChange={openChange}>
                   <DialogTrigger asChild>
                     <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
                       <Plus />
