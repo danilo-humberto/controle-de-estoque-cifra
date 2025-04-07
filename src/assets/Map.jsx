@@ -8,7 +8,7 @@ const Map = () => {
 
   const estiloEstado = (feature) => {
     return {
-      fillColor: estados.includes(feature.id) ? "blue" : "black",
+      fillColor: estados.includes(feature.id) ? "#288bc8" : "black",
       weight: 0,
       opacity: 0,
       fillOpacity: 0.3,
