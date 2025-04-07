@@ -1,3 +1,4 @@
+ 
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -21,37 +22,51 @@ import { Link } from "react-router-dom";
 import { getEquipamentos } from "@/data/api";
 
 const Equipamentos = () => {
+  const [equipamentos, setEquipamentos] = useState([]);
+
+  useEffect(() => {
+    const getAllEquipamentos = async () => {
+      const response = await getEquipamentos();
+      setEquipamentos(response)
+    }
+
+    getAllEquipamentos()
+  }, [])
+
+  const filtrarEquipamentos = (tipo) => {
+    return equipamentos.filter(item => item.status === "ATIVO" && item.equipamento === tipo).length
+  }
+
   const chartPizzaData = [
-    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-    { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-    { browser: "other", visitors: 90, fill: "var(--color-other)" },
+    { browser: "Celular", visitors: equipamentos ? filtrarEquipamentos("Celular") : 0, fill: "#4169E1" },
+    { browser: "Notebooks", visitors: equipamentos ? filtrarEquipamentos("Notebook") : 0, fill: "#1E90FF" },
+    { browser: "Tablet", visitors: equipamentos ? filtrarEquipamentos("Tablet") : 0, fill: "#00BFFF" },
+    { browser: "Impressora", visitors: equipamentos ? filtrarEquipamentos("Impressora") : 0, fill: "#191970" },
+    { browser: "Desktop", visitors: equipamentos ? filtrarEquipamentos("Desktop") : 0, fill: "#6A5ACD" },
+    { browser: "Acessórios", visitors: equipamentos ? filtrarEquipamentos("Acessórios") : 0, fill: "	#ADD8E6" },
   ];
 
   const chartPizzaConfig = {
     visitors: {
       label: "Visitors",
     },
-    chrome: {
-      label: "Chrome",
-      color: "hsl(var(--chart-1))",
+    Celular: {
+      label: "Celular",
     },
-    safari: {
-      label: "Safari",
-      color: "hsl(var(--chart-2))",
+    Notebooks: {
+      label: "Notebooks",
     },
-    firefox: {
-      label: "Firefox",
-      color: "hsl(var(--chart-3))",
+    Tablet: {
+      label: "Tablet",
     },
-    edge: {
-      label: "Edge",
-      color: "hsl(var(--chart-4))",
+    Impressora: {
+      label: "Impressora",
     },
-    other: {
-      label: "Other",
-      color: "hsl(var(--chart-5))",
+    Desktop: {
+      label: "Desktop",
+    },
+    Acessórios: {
+      label: "Acessórios",
     },
   };
 
@@ -71,17 +86,6 @@ const Equipamentos = () => {
     },
   };
 
-  const [equip, setEquip] = useState([]);
-
-  useEffect(() => {
-    const getAllEquipamentos = async () => {
-      const response = await getEquipamentos();
-      setEquip(response)
-    }
-
-    getAllEquipamentos()
-  }, [])
-
   return (
     <div className="w-4/5 h-[96%] p-4 mx-auto xl:overflow-y-scroll 2xl:overflow-hidden no-scrollbar">
       <div className="flex justify-between items-center text-[var(--gray-300)] h-12">
@@ -95,7 +99,7 @@ const Equipamentos = () => {
       </div>
       <div className="w-full h-full flex flex-col gap-6 xl:mt-4 2xl:mt-8">
         <div className="flex gap-4">
-          <Card className="w-2/4 bg-[var(--gray-600)] border-none">
+          <Card className="w-2/4 bg-[var(--gray-600)] border-none 2xl:h-[354px] xl:h-[346px]">
             <CardHeader>
               <CardTitle className="text-[var(--gray-300)] xl:text-base 2xl:text-2xl">
                 Quantidade por Equipamento
@@ -104,7 +108,7 @@ const Equipamentos = () => {
             <CardContent>
               <ChartContainer
                 config={chartPizzaConfig}
-                className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-[var(--gray-300)]"
+                className="mx-auto aspect-square max-h-[260px] pb-0 [&_.recharts-pie-label-text]:fill-[var(--gray-300)] mt-2"
               >
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent hideLabel />} />
@@ -117,7 +121,7 @@ const Equipamentos = () => {
                   />
                   <ChartLegend
                     content={<ChartLegendContent nameKey="browser" />}
-                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center text-[var(--gray-300)]"
+                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center text-[var(--gray-300)] mt-1"
                   />
                 </PieChart>
               </ChartContainer>
@@ -132,12 +136,12 @@ const Equipamentos = () => {
             </CardHeader>
             <CardContent className="h-[274px]">
               <div className="w-full h-full flex items-center justify-center">
-                <div className="bg-orange-400 w-52 h-52 rounded-full flex items-center justify-center text-[var(--gray-300)] text-5xl font-bold">
+                <div className="bg-blue-600 w-52 h-52 rounded-full flex items-center justify-center text-[var(--gray-300)] text-5xl font-bold">
                   <div className="bg-[var(--gray-600)] z-10 w-40 h-40 rounded-full flex items-center justify-center">
                     <span>
                       <CountUp 
                         start={0}
-                        end={equip.length}
+                        end={equipamentos.length}
                         duration={2}
                         separator=","
                       />
@@ -148,7 +152,7 @@ const Equipamentos = () => {
             </CardContent>
           </Card>
 
-          <Card className="w-2/4 bg-[var(--gray-600)] border-none">
+          <Card className="w-2/4 bg-[var(--gray-600)] border-none 2xl:h-[354px] xl:h-[346px]">
             <CardHeader>
               <CardTitle className="text-[var(--gray-300)] xl:text-base 2xl:text-2xl">
                 Quantidade de Equipamento por Status
@@ -157,7 +161,7 @@ const Equipamentos = () => {
             <CardContent>
               <ChartContainer
                 config={chartPizzaConfig}
-                className="mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-[var(--gray-300)]"
+                className="mx-auto aspect-square max-h-[260px] pb-0 [&_.recharts-pie-label-text]:fill-[var(--gray-300)] mt-2"
               >
                 <PieChart>
                   <ChartTooltip content={<ChartTooltipContent hideLabel />} />
@@ -166,10 +170,11 @@ const Equipamentos = () => {
                     dataKey="visitors"
                     label
                     nameKey="browser"
+                    className="text-[var(--gray-300)]"
                   />
                   <ChartLegend
                     content={<ChartLegendContent nameKey="browser" />}
-                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center text-[var(--gray-300)]"
+                    className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center text-[var(--gray-300)] mt-1"
                   />
                 </PieChart>
               </ChartContainer>
@@ -208,7 +213,7 @@ const Equipamentos = () => {
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
                   />
-                  <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+                  <Bar dataKey="desktop" fill="#4169E1" radius={8}>
                     <LabelList
                       position="top"
                       offset={12}
