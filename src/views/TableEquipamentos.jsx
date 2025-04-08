@@ -22,7 +22,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { deleteEquipamento, getEquipamentos, postEquipamentos } from "@/data/api";
+import {
+  deleteEquipamento,
+  getEquipamentos,
+  postEquipamentos,
+  putEquipamentos,
+} from "@/data/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -38,7 +43,8 @@ const TableEquipamentos = () => {
   const [equip, setEquip] = useState([]);
   const [equipFiltrado, setEquipFiltrado] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCadastroOpen, setIsCadastroOpen] = useState(false);
+  const [isEditarOpen, setIsEditarOpen] = useState(false);
   const { toast } = useToast();
   const [equipSelect, setEquipSelect] = useState("");
 
@@ -53,7 +59,9 @@ const TableEquipamentos = () => {
   const selecionarLinha = (imei1) => {
     setEquip((prev) =>
       prev.map((item) =>
-        item.imei_serie === imei1 ? { ...item, selecionado: !item.selecionado } : item
+        item.imei_serie === imei1
+          ? { ...item, selecionado: !item.selecionado }
+          : item
       )
     );
   };
@@ -115,40 +123,88 @@ const TableEquipamentos = () => {
       setImei1("");
       setImei2("");
       setTombamento("");
-      setIsOpen(false);
+      setIsCadastroOpen(false);
 
       buscarEquip();
     } catch {
       toast({
         title: "Falha ao cadastrar. Tente novamente mais tarde!",
       });
-      setIsOpen(false);
+      setIsCadastroOpen(false);
     }
   };
 
-  const openChange = () => {
-    setIsOpen(false);
+  const handleEditar = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("equipamento", equipamento);
+      formData.append("modelo", modelo);
+      formData.append("imei_serie", imei1);
+      formData.append("imei2", imei2);
+      formData.append("tombamento", tombamento);
+
+      const response = await putEquipamentos(formData);
+      console.log(response);
+      toast({
+        title: response.mensagem,
+        variant: "sucess",
+      });
+      setEquipamento("");
+      setModelo("");
+      setImei1("");
+      setImei2("");
+      setTombamento("");
+      setIsEditarOpen(false);
+
+      buscarEquip();
+    } catch {
+      setIsEditarOpen(false);
+      toast({
+        title: "Falha ao editar. Tente novamente mais tarde!",
+      });
+    }
+  };
+
+  const openCadastroChange = () => {
+    setIsCadastroOpen(!isCadastroOpen);
     setEquipamento("");
     setModelo("");
     setImei1("");
     setImei2("");
     setTombamento("");
-  }
+  };
 
   const equipamentoSelecionado = useMemo(() => {
     const selecionados = equip.filter((item) => item.selecionado);
-    return selecionados
-  }, [equip])
+    return selecionados;
+  }, [equip]);
 
   const handleDelete = async () => {
     try {
       await deleteEquipamento(equipamentoSelecionado[0].imei_serie);
 
-      buscarEquip()
+      buscarEquip();
     } catch {
-      console.log("erro")
+      console.log("erro");
     }
-  }
+  };
+
+  const openEditarChange = () => {
+    if (!equipamentoSelecionado[0]) return;
+
+    setEquipamento(equipamentoSelecionado[0].equipamento);
+    setModelo(equipamentoSelecionado[0].modelo);
+    setImei1(equipamentoSelecionado[0].imei_serie);
+    setImei2(equipamentoSelecionado[0].imei2 || "");
+    setTombamento(equipamentoSelecionado[0].tombamento);
+
+    setIsEditarOpen(!isEditarOpen);
+  };
+
+  const tiposEquipamentos = useMemo(() => {
+    const tipos = equip.map((item) => item.equipamento);
+    return Array.from(new Set(tipos));
+  }, [equip]);
 
   return (
     <div className="w-4/5 h-full p-4 mx-auto overflow-hidden">
@@ -175,42 +231,15 @@ const TableEquipamentos = () => {
                   </SelectTrigger>
                   <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
                     <SelectGroup>
-                      <SelectItem
-                        value="celular"
-                        className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
-                      >
-                        Celular
-                      </SelectItem>
-                      <SelectItem
-                        value="tablet"
-                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
-                      >
-                        Tablet
-                      </SelectItem>
-                      <SelectItem
-                        value="impressora"
-                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
-                      >
-                        Impressora
-                      </SelectItem>
-                      <SelectItem
-                        value="desktop"
-                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
-                      >
-                        Desktop
-                      </SelectItem>
-                      <SelectItem
-                        value="notebook"
-                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
-                      >
-                        Notebook
-                      </SelectItem>
-                      <SelectItem
-                        value="acessorios"
-                        className="focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer"
-                      >
-                        Acessórios
-                      </SelectItem>
+                      {tiposEquipamentos.map((tipo) => (
+                        <SelectItem
+                          key={tipo}
+                          value={tipo}
+                          className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                        >
+                          {tipo}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                     <Separator className="bg-[var(--gray-500)]" />
                     <SelectGroup>
@@ -238,7 +267,7 @@ const TableEquipamentos = () => {
                 </Button>
               </div>
               <div className="flex items-center gap-4">
-                <Dialog open={isOpen} onOpenChange={openChange}>
+                <Dialog open={isCadastroOpen} onOpenChange={openCadastroChange}>
                   <DialogTrigger asChild>
                     <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
                       <Plus />
@@ -302,7 +331,7 @@ const TableEquipamentos = () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Dialog>
+                <Dialog open={isEditarOpen} onOpenChange={openEditarChange}>
                   <DialogTrigger asChild>
                     <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
                       <Pencil />
@@ -321,27 +350,38 @@ const TableEquipamentos = () => {
                     <form className="w-full h-full flex flex-col gap-3 items-center mt-4 mb-2">
                       <input
                         type="text"
-                        placeholder="Aparelho"
+                        placeholder="Equipamento"
+                        value={equipamento}
+                        onChange={(e) => setEquipamento(e.target.value)}
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
                         placeholder="Modelo"
+                        value={modelo}
+                        onChange={(e) => setModelo(e.target.value)}
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
                         placeholder="IMEI 1"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                        disabled
+                        value={imei1}
+                        onChange={(e) => setImei1(e.target.value)}
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm opacity-50 cursor-not-allowed"
                       />
                       <input
                         type="text"
                         placeholder="IMEI 2"
+                        value={imei2}
+                        onChange={(e) => setImei2(e.target.value)}
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                       <input
                         type="text"
                         placeholder="Tombamento"
+                        value={tombamento}
+                        onChange={(e) => setTombamento(e.target.value)}
                         className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
                       />
                     </form>
@@ -349,6 +389,7 @@ const TableEquipamentos = () => {
                       <Button
                         className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
                         type="submit"
+                        onClick={handleEditar}
                       >
                         Salvar
                       </Button>
@@ -372,7 +413,9 @@ const TableEquipamentos = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete}>Confirmar</AlertDialogAction>
+                      <AlertDialogAction onClick={handleDelete}>
+                        Confirmar
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -382,14 +425,20 @@ const TableEquipamentos = () => {
               <table className="w-full">
                 <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
                   <tr>
-                    <th align="left" className="p-2 w-[30px]">
-                      xx
+                    <th align="left" className="w-[30px] p-2 opacity-0">x</th>
+                    <th align="left" className="w-[180px]">
+                      Equipamento
                     </th>
-                    <th align="left" className="w-[180px]">Equipamento</th>
-                    <th align="left" className="w-[300px]">Modelo</th>
-                    <th align="left" className="w-[210px]">IMEI 1 / Série</th>
+                    <th align="left" className="w-[300px]">
+                      Modelo
+                    </th>
+                    <th align="left" className="w-[210px]">
+                      IMEI 1 / Série
+                    </th>
                     <th align="left">IMEI 2</th>
-                    <th align="left" className="w-[180px]">Tombamento</th>
+                    <th align="left" className="w-[180px]">
+                      Tombamento
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="text-[var(--gray-300)]">
@@ -399,7 +448,7 @@ const TableEquipamentos = () => {
                         key={index}
                         className="border-b border-[var(--gray-500)] text-sm"
                       >
-                        <td className="w-[50px] p-2">
+                        <td align="center" className="w-[50px] p-2">
                           <input
                             type="checkbox"
                             checked={!!item.selecionado}
