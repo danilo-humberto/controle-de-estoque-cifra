@@ -1,19 +1,11 @@
 import React from "react";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import estadosBrasil from "../data/estadosBrasil.json";
+import estadosBrasil from "@/constants/estadosBrasil.json";
+import {ESTADOS_SELECIONADOS, MAP_CENTER, MAP_ZOOM} from "./utils/constants"
+import {estadoStyle} from "./utils/mapStyles"
 
 const Map = () => {
-  const estados = ["PE", "SE", "AL", "RN"];
-
-  const estiloEstado = (feature) => {
-    return {
-      fillColor: estados.includes(feature.id) ? "#288bc8" : "black",
-      weight: 0,
-      opacity: 0,
-      fillOpacity: 0.3,
-    };
-  };
 
   return (
     <div className="w-full h-full text-[var(--gray-300)]">
@@ -22,8 +14,8 @@ const Map = () => {
       </h2>
       <div className="w-full h-[90%] mt-6">
         <MapContainer
-          zoom={6}
-          center={[-8, -40]}
+          zoom={MAP_ZOOM}
+          center={MAP_CENTER}
           className="w-full h-full rounded-md"
         >
           <TileLayer
@@ -32,7 +24,10 @@ const Map = () => {
             noWrap={true}
             tileSize={256}
           />
-          <GeoJSON data={estadosBrasil} style={estiloEstado}/>
+          <GeoJSON 
+            data={estadosBrasil}
+            style={(feature) => estadoStyle(feature, ESTADOS_SELECIONADOS)}
+          />
         </MapContainer>
       </div>
     </div>
