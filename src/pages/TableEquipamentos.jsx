@@ -22,12 +22,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import {
-  deleteEquipamento,
-  getEquipamentos,
-  postEquipamentos,
-  putEquipamentos,
-} from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -38,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { deleteEquipamento, getEquipamentos, postEquipamentos, putEquipamentos } from "@/services/equipamentoService";
 
 const TableEquipamentos = () => {
   const [equip, setEquip] = useState([]);

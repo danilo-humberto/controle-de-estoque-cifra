@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/chart";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
-import { getEquipamentos } from "@/services/api";
+import { getEquipamentos } from "@/services/equipamentoService";
 
 const Equipamentos = () => {
   const [equipamentos, setEquipamentos] = useState([]);

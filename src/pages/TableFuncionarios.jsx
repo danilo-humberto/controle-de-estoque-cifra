@@ -30,15 +30,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import {
-  deleteFuncionario,
-  getAllUnidades,
-  getFuncionarios,
-  postFuncionarios,
-  putFuncionarios,
-} from "@/services/api";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
+import { deleteFuncionarios, getFuncionarios, postFuncionarios, putFuncionarios } from "@/services/funcionariosService";
+import { getUnidades } from "@/services/unidadeService";
 
 const TableFuncionarios = () => {
   const [func, setFunc] = useState([]);
@@ -72,7 +67,7 @@ const TableFuncionarios = () => {
 
   const buscarUnidades = async () => {
     try {
-      const dados = await getAllUnidades();
+      const dados = await getUnidades();
       setUnidades(dados);
     } catch (error) {
       console.log(error);
@@ -269,7 +264,7 @@ const TableFuncionarios = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteFuncionario(funcionarioSelecionado[0].cpf);
+      await deleteFuncionarios(funcionarioSelecionado[0].cpf);
 
       toast({
         title: "Funcionário deletado com sucesso!",
