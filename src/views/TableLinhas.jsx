@@ -29,16 +29,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Separator } from "@/components/ui/separator";
-import { getLinhas } from "@/data/api";
+import { deleteLinha, getLinhas } from "@/data/api";
 import React, { useEffect, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const TableLinhas = () => {
   const [status, setStatus] = useState("");
   const [operadora, setOperadora] = useState("");
   const [linhas, setLinhas] = useState([]);
   const [linhasFiltradas, setLinhasFiltradas] = useState([]);
-  const [selectedLinhas, setSelectedLinhas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,34 +50,49 @@ const TableLinhas = () => {
     setOperadora(value === "limpar" ? "" : value);
   };
 
-  const handleSelectAll = (checked) => {
-    if (checked) {
-      // Seleciona todos usando o índice
-      setSelectedLinhas(linhas.map((_, index) => index));
-    } else {
-      setSelectedLinhas([]); // Desmarca todos
+  const buscarLinhas = async () => {
+    try {
+      const dados = await getLinhas();
+      setLinhas(dados);
+      setLinhasFiltradas(dados);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  const handleSelectLinha = (index) => {
-    setSelectedLinhas((prev) =>
-      prev.includes(index)
-        ? prev.filter((item) => item !== index)
-        : [...prev, index]
-    );
-  };
+  const linhaSelecionada = () => {
+    const selecionadas = linhas.filter((item) => item.selecionado);
+    return selecionadas;
+  }
+
+ const selecionarLinha = (number) => {
+  setLinhas((prev) => 
+    prev.map((item) => 
+      item.linha === number
+        ? { ...item, selecionado: !item.selecionado }
+        : item
+    )
+  )
+ }
+
+ const handleDelete = async () => {
+  try {
+    await deleteLinha(linhaSelecionada[0].linha)
+    toast({
+      title: "Linha deletada com sucesso!",
+      variant: "sucess"
+    })
+
+    buscarLinhas()
+  } catch {
+    toast({
+      title: "Erro ao deletar linha!",
+      variant: "sucess"
+    })
+  }
+ }
 
   useEffect(() => {
-    const buscarLinhas = async () => {
-      try {
-        const dados = await getLinhas();
-        setLinhas(dados);
-        setLinhasFiltradas(dados);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     buscarLinhas();
   }, []);
 
@@ -306,7 +321,7 @@ const TableLinhas = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction>Confirmar</AlertDialogAction>
+                      <AlertDialogAction onClick={handleDelete}>Confirmar</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -316,24 +331,12 @@ const TableLinhas = () => {
               <table className="w-full">
                 <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
                   <tr>
-                    <th align="left" className="p-2 w-[40px]">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => handleSelectAll(e.target.checked)}
-                        checked={
-                          selectedLinhas.length === linhas.length &&
-                          linhas.length > 0
-                        }
-                        className="
-                          appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
-                          relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
-                          checked:before:block before:hidden checked:hover:bg-[var(--gray-300)]
-                        "
-                      />
+                    <th align="left" className="p-2 w-[40px] opacity-0">
+                      x
                     </th>
-                    <th align="left">Linha</th>
-                    <th align="left">Operadora</th>
-                    <th align="left">Status</th>
+                    <th align="left" className="w-[562px]">Linha</th>
+                    <th align="left" className="w-[490px]">Operadora</th>
+                    <th align="left" className="w-[330px]">Status</th>
                   </tr>
                 </thead>
                 <tbody className="text-[var(--gray-300)]">
@@ -346,8 +349,8 @@ const TableLinhas = () => {
                         <td className="p-2">
                           <input
                             type="checkbox"
-                            checked={selectedLinhas.includes(index)}
-                            onChange={() => handleSelectLinha(index)}
+                            checked={!!item.selecionado}
+                            onChange={() => selecionarLinha(item.linha)}
                             className="
                             appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
                             relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
