@@ -141,7 +141,7 @@ const Equipamentos = () => {
                     <span>
                       <CountUp 
                         start={0}
-                        end={equipamentos.length}
+                        end={equipamentos ? equipamentos.length : 0}
                         duration={2}
                         separator=","
                       />
