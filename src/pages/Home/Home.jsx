@@ -3,7 +3,7 @@ import Cards from "../components/Cards";
 import { Package, Users, Voicemail } from "lucide-react";
 import Statistic from "../components/Statistic";
 import { Link, useNavigate } from "react-router-dom";
-import Map from "@/components/Map";
+import Map from "@/pages/Home/components/Map";
 
 const Home = () => {
   const [horas, setHoras] = useState(
