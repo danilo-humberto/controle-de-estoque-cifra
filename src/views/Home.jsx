@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Cards from "../assets/Cards";
+import Cards from "../components/Cards";
 import { Package, Users, Voicemail } from "lucide-react";
-import Statistic from "../assets/Statistic";
+import Statistic from "../components/Statistic";
 import { Link, useNavigate } from "react-router-dom";
-import Map from "@/assets/Map";
+import Map from "@/components/Map";
 
 const Home = () => {
   const [horas, setHoras] = useState(
