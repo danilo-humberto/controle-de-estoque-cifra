@@ -1,13 +1,13 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Home from './views/Home'
-import Funcionarios from './views/Funcionarios'
-import Linhas from './views/Linhas'
-import Equipamentos from './views/Equipamentos'
-import TableEquipamentos from './views/TableEquipamentos'
-import TableLinhas from './views/TableLinhas'
-import TableFuncionarios from './views/TableFuncionarios'
-import Movimentacao from './views/Movimentacao'
+import Home from './pages/Home'
+import Funcionarios from './pages/Funcionarios'
+import Linhas from './pages/Linhas'
+import Equipamentos from './pages/Equipamentos'
+import TableEquipamentos from './pages/TableEquipamentos'
+import TableLinhas from './pages/TableLinhas'
+import TableFuncionarios from './pages/TableFuncionarios'
+import Movimentacao from './pages/Movimentacao'
 
 const Router = () => {
   return (
