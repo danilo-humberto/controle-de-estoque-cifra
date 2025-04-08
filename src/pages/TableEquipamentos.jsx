@@ -27,7 +27,7 @@ import {
   getEquipamentos,
   postEquipamentos,
   putEquipamentos,
-} from "@/data/api";
+} from "@/services/api";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,

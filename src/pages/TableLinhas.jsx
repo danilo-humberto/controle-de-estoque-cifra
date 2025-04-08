@@ -29,7 +29,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Separator } from "@/components/ui/separator";
-import { deleteLinha, getLinhas } from "@/data/api";
+import { deleteLinha, getLinhas } from "@/services/api";
 import React, { useEffect, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";

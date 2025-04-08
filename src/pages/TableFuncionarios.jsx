@@ -36,7 +36,7 @@ import {
   getFuncionarios,
   postFuncionarios,
   putFuncionarios,
-} from "@/data/api";
+} from "@/services/api";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "@/hooks/use-toast";
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BringToFront, Laptop, MonitorCheck, Printer, Smartphone, Tablet, Users, Voicemail } from 'lucide-react'
 import { useMediaQuery } from 'react-responsive'
-import { getEquipamentos, getFuncionarios, getLinhas } from '@/data/api';
+import { getEquipamentos, getFuncionarios, getLinhas } from '@/services/api';
 
 const Statistic = () => {
 
