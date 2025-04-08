@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -30,14 +30,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { getAllUnidades, getFuncionarios, postFuncionarios } from "@/data/api";
+import {
+  deleteFuncionario,
+  getAllUnidades,
+  getFuncionarios,
+  postFuncionarios,
+  putFuncionarios,
+} from "@/data/api";
 import { Separator } from "@/components/ui/separator";
+import { toast } from "@/hooks/use-toast";
 
 const TableFuncionarios = () => {
   const [func, setFunc] = useState([]);
   const [funcFiltrado, setFuncFiltrado] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCadastroOpen, setIsCadastroOpen] = useState(false);
+  const [isEditarOpen, setIsEditarOpen] = useState(false);
   const [unidades, setUnidades] = useState([]);
 
   // PARA CADASTRAR
@@ -57,7 +65,6 @@ const TableFuncionarios = () => {
       const dados = await getFuncionarios();
       setFunc(dados);
       setFuncFiltrado(dados);
-      console.log(dados)
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +74,6 @@ const TableFuncionarios = () => {
     try {
       const dados = await getAllUnidades();
       setUnidades(dados);
-      console.log(dados);
     } catch (error) {
       console.log(error);
     }
@@ -147,19 +153,57 @@ const TableFuncionarios = () => {
       formData.append("regiao", regiao);
       formData.append("gerencia", gerencia);
 
-      const response = await postFuncionarios(formData);
-      console.log(response.mensagem);
+      await postFuncionarios(formData);
+
+      toast({
+        title: "Funcionário cadastrado com sucesso!",
+        variant: "sucess",
+      });
       setNome("");
       setCpf("");
       setContrato("");
       setRegiao("");
       setGerencia("");
-      setIsOpen(false);
+      setIsCadastroOpen(false);
 
       buscarFunc();
     } catch {
-      console.log("Erro ao cadastrar");
-      setIsOpen(false);
+      toast({
+        title: "Erro ao cadastrar funcionário",
+      });
+      setIsCadastroOpen(false);
+    }
+  };
+
+  const handleEditar = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("nome", nome);
+      formData.append("cpf", cpf);
+      formData.append("contrato", contrato);
+      formData.append("regiao", regiao);
+      formData.append("gerencia", gerencia);
+
+      const response = await putFuncionarios(formData);
+
+      toast({
+        title: response.mensagem,
+        variant: "sucess",
+      });
+      setNome("");
+      setCpf("");
+      setContrato("");
+      setRegiao("");
+      setGerencia("");
+      setIsEditarOpen(false);
+
+      buscarFunc();
+    } catch {
+      toast({
+        title: "Erro ao editar funcionário",
+        variant: "sucess"
+      });
+      setIsEditarOpen(false);
     }
   };
 
@@ -169,15 +213,75 @@ const TableFuncionarios = () => {
     ).values()
   );
 
-  const openChange = () => {
-    setIsOpen(!isOpen);
+  const openCadastroChange = () => {
+    setIsCadastroOpen(!isCadastroOpen);
     setNome("");
     setCpf("");
     setContrato("");
     setRegiao("");
-    setRegioes([]);
     setGerencia("");
-    setGerencias([]);
+  };
+
+  const selecionarLinha = (cpf) => {
+    setFunc((prev) =>
+      prev.map((item) =>
+        item.cpf === cpf ? { ...item, selecionado: !item.selecionado } : item
+      )
+    );
+  };
+
+  const funcionarioSelecionado = useMemo(() => {
+    const selecionados = func.filter((item) => item.selecionado);
+    return selecionados;
+  }, [func]);
+
+  const openEditarChange = () => {
+    if (!funcionarioSelecionado[0]) return;
+
+    const contratoSelecionado = funcionarioSelecionado[0].contrato;
+    const regiaoSelecionada = funcionarioSelecionado[0].regiao;
+    const gerenciaSelecionada = funcionarioSelecionado[0].gerencia;
+
+    setContrato(contratoSelecionado);
+    setGerencia(gerenciaSelecionada);
+    setRegiao(regiaoSelecionada);
+    setNome(funcionarioSelecionado[0].nome);
+    setCpf(funcionarioSelecionado[0].cpf);
+
+    const regioesFiltradas = unidades
+      .filter((u) => u.nome === contratoSelecionado)
+      .map((u) => u.nome_regiao);
+    const regioesUnicas = [...new Set(regioesFiltradas)];
+    setRegioes(regioesUnicas);
+
+    const gerenciasFiltradas = unidades
+      .filter(
+        (u) =>
+          u.nome.toLowerCase() === contratoSelecionado.toLowerCase() &&
+          u.nome_regiao.toLowerCase() === regiaoSelecionada.toLowerCase()
+      )
+      .map((u) => u.nome_gerencia);
+    const gerenciasUnicas = [...new Set(gerenciasFiltradas)];
+    setGerencias(gerenciasUnicas);
+
+    setIsEditarOpen(!isEditarOpen);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await deleteFuncionario(funcionarioSelecionado[0].cpf);
+
+      toast({
+        title: "Funcionário deletado com sucesso!",
+        variant: "sucess",
+      })
+      buscarFunc()
+    } catch {
+      toast({
+        title: "Erro ao deletar o funcionário!",
+        variant: "sucess",
+      })
+    }
   }
 
   return (
@@ -199,12 +303,9 @@ const TableFuncionarios = () => {
                 className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
               />
               <div className="flex items-center gap-4">
-                <Dialog open={isOpen} onOpenChange={openChange}>
+                <Dialog open={isCadastroOpen} onOpenChange={openCadastroChange}>
                   <DialogTrigger asChild>
-                    <Button
-                      className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]"
-                      onClick={() => setIsOpen(true)}
-                    >
+                    <Button className="bg-green-500 hover:bg-green-600 h-[38px] text-[var(--gray-200)]">
                       <Plus />
                     </Button>
                   </DialogTrigger>
@@ -344,7 +445,7 @@ const TableFuncionarios = () => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Dialog>
+                <Dialog open={isEditarOpen} onOpenChange={openEditarChange}>
                   <DialogTrigger asChild>
                     <Button className="bg-[var(--gray-900)] hover:bg-[var(--gray-700)] h-[38px] text-[var(--gray-200)]">
                       <Pencil />
@@ -366,27 +467,6 @@ const TableFuncionarios = () => {
                     >
                       <input
                         type="text"
-                        value={contrato}
-                        onChange={(e) => setContrato(e.target.value)}
-                        placeholder="Contrato"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                      <input
-                        type="text"
-                        value={cpf}
-                        onChange={(e) => setCpf(e.target.value)}
-                        placeholder="CPF"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                      <input
-                        type="text"
-                        value={gerencia}
-                        onChange={(e) => setGerencia(e.target.value)}
-                        placeholder="Gerência"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
-                      />
-                      <input
-                        type="text"
                         value={nome}
                         onChange={(e) => setNome(e.target.value)}
                         placeholder="Nome"
@@ -394,16 +474,114 @@ const TableFuncionarios = () => {
                       />
                       <input
                         type="text"
-                        value={regiao}
-                        onChange={(e) => setRegiao(e.target.value)}
-                        placeholder="Região"
-                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm"
+                        value={cpf}
+                        onChange={(e) => setCpf(e.target.value)}
+                        placeholder="CPF"
+                        disabled
+                        className="w-[80%] px-4 py-2 bg-transparent border border-[var(--gray-600)] focus:border-[var(--gray-500)] rounded-md text-[var(--gray-300)] text-sm outline-none placeholder:text-sm opacity-50 cursor-not-allowed"
                       />
+                      <Select
+                        value={contrato}
+                        onValueChange={handleContratoChange}
+                      >
+                        <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                          <SelectValue placeholder="Contrato" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                          <SelectGroup>
+                            {contratosUnicos.map((contrato) => (
+                              <SelectItem
+                                key={contrato.id}
+                                value={contrato.nome}
+                                className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                              >
+                                {contrato.nome}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                          <Separator className="bg-[var(--gray-500)]" />
+                          <SelectGroup>
+                            <SelectItem
+                              value="limpar"
+                              disabled={!contrato}
+                              className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                                !contrato ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              Limpar
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Select value={regiao} onValueChange={handleRegiaoChange}>
+                        <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                          <SelectValue placeholder="Região" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                          <SelectGroup>
+                            {regioes.map((regiao) => (
+                              <SelectItem
+                                key={regiao}
+                                value={regiao}
+                                className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                              >
+                                {regiao}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                          <Separator className="bg-[var(--gray-500)]" />
+                          <SelectGroup>
+                            <SelectItem
+                              value="limpar"
+                              disabled={!regiao}
+                              className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                                !regiao ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              Limpar
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <Select
+                        value={gerencia}
+                        onValueChange={handleGerenciaChange}
+                      >
+                        <SelectTrigger className="w-[80%] bg-transparent border-[var(--gray-600)] outline-none ring-offset-0 focus:ring-offset-0 focus:ring-0 focus:outline-none focus:border-[var(--gray-500)] data-[placeholder]:text-[var(--gray-400)] text-[var(--gray-300)]">
+                          <SelectValue placeholder="Gerência" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--gray-700)] border-[var(--gray-900)]">
+                          <SelectGroup>
+                            {gerencias.map((gerencia) => (
+                              <SelectItem
+                                key={gerencia}
+                                value={gerencia}
+                                className="hover:bg-[var(--gray-500)] focus:bg-[var(--gray-500)] cursor-pointer text-[var(--gray-300)] focus:text-[var(--gray-300)]"
+                              >
+                                {gerencia}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                          <Separator className="bg-[var(--gray-500)]" />
+                          <SelectGroup>
+                            <SelectItem
+                              value="limpar"
+                              disabled={!gerencia}
+                              className={`focus:bg-[var(--gray-500)] text-[var(--gray-300)] focus:text-[var(--gray-300)] cursor-pointer ${
+                                !gerencia ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              Limpar
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </form>
                     <DialogFooter>
                       <Button
                         className="bg-[var(--gray-200)] hover:bg-[var(--gray-300)] text-[var(--gray-700)]"
                         type="submit"
+                        onClick={handleEditar}
                       >
                         Salvar
                       </Button>
@@ -427,7 +605,7 @@ const TableFuncionarios = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                      <AlertDialogAction>Confirmar</AlertDialogAction>
+                      <AlertDialogAction onClick={handleDelete}>Confirmar</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -437,30 +615,33 @@ const TableFuncionarios = () => {
               <table className="w-full">
                 <thead className="border-b border-[var(--gray-500)] font-bold text-[var(--gray-400)]">
                   <tr>
-                    <th align="left" className="p-2 w-[40px]">
-                      <input
-                        type="checkbox"
-                        className="
-                          appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
-                          relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
-                          checked:before:block before:hidden checked:hover:bg-[var(--gray-300)]
-                        "
-                      />
+                    <th align="left" className="w-[40px] opacity-0 p-2">
+                      x
                     </th>
-                    <th align="left">Contrato</th>
-                    <th align="left">CPF</th>
-                    <th align="left">Gerência</th>
+                    <th align="left" className="w-[350px]">
+                      Contrato
+                    </th>
+                    <th align="left" className="w-[300px]">
+                      Região
+                    </th>
+                    <th align="left" className="w-[250px]">
+                      Gerência
+                    </th>
                     <th align="left">Nome</th>
-                    <th align="left">Região</th>
+                    <th align="left" className="w-[200px]">
+                      CPF
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="text-[var(--gray-300)]">
                   {funcFiltrado && funcFiltrado.length > 0 ? (
                     funcFiltrado.map((item) => (
                       <tr key={item.id} className="text-sm">
-                        <td className="p-2">
+                        <td className="p-2" align="center">
                           <input
                             type="checkbox"
+                            checked={!!item.selecionado}
+                            onChange={() => selecionarLinha(item.cpf)}
                             className="
                           appearance-none border w-[0.9rem] h-[0.9rem] rounded-sm checked:bg-[var(--gray-200)] outline-none
                           relative before:content-['✔'] before:text-xs before:text-black before:absolute before:left-[1px] before:top-[-2px]
@@ -469,10 +650,10 @@ const TableFuncionarios = () => {
                           />
                         </td>
                         <td>{item.contrato}</td>
-                        <td>{item.cpf}</td>
+                        <td>{item.regiao}</td>
                         <td>{item.gerencia}</td>
                         <td>{item.nome}</td>
-                        <td>{item.regiao}</td>
+                        <td>{item.cpf}</td>
                       </tr>
                     ))
                   ) : (
