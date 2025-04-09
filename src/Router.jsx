@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
-import Funcionarios from './pages/Funcionarios'
+import Funcionarios from './pages/Funcionarios/index'
 import Linhas from './pages/Linhas'
-import Equipamentos from './pages/Equipamentos'
-import TableEquipamentos from './pages/TableEquipamentos'
+import Equipamentos from './pages/Equipamentos/index'
+import TableEquipamentos from './pages/Equipamentos/table/index'
 import TableLinhas from './pages/TableLinhas'
 import TableFuncionarios from './pages/TableFuncionarios'
 import Movimentacao from './pages/Movimentacao'
@@ -18,7 +18,7 @@ const Router = () => {
             <Route path="/equipamentos" element={<Equipamentos />} />
             <Route path="/linhas" element={<Linhas />} />
             <Route path="/movimentacao" element={<Movimentacao />} />
-            <Route path="/tableEquipamentos" element={<TableEquipamentos />} />
+            <Route path="/equipamentos/table" element={<TableEquipamentos />} />
             <Route path="/tableLinhas" element={<TableLinhas />} />
             <Route path="/tableFuncionarios" element={<TableFuncionarios />} />
         </Routes>
