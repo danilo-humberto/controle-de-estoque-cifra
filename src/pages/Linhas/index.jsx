@@ -9,7 +9,7 @@ const Linhas = () => {
           Dashboard de Linhas
         </h2>
         <Link
-          to={"/tableLinhas"}
+          to={"/linhas/table"}
           className="bg-[var(--gray-600)] hover:bg-[var(--gray-500)] xl:py-2 2xl:py-3 px-4 rounded-md transition-all duration-300 xl:text-sm 2xl:text-lg"
         >
           Ver Tabela
