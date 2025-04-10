@@ -7,7 +7,7 @@ import Equipamentos from './pages/Equipamentos/index'
 import TableEquipamentos from './pages/Equipamentos/table/index'
 import TableLinhas from './pages/Linhas/table/index'
 import TableFuncionarios from './pages/TableFuncionarios'
-import Movimentacao from './pages/Movimentacao'
+import Movimentacao from './pages/Movimentação'
 
 const Router = () => {
   return (
