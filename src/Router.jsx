@@ -6,8 +6,9 @@ import Linhas from './pages/Linhas/index'
 import Equipamentos from './pages/Equipamentos/index'
 import TableEquipamentos from './pages/Equipamentos/table/index'
 import TableLinhas from './pages/Linhas/table/index'
-import TableFuncionarios from './pages/TableFuncionarios'
+import TableFuncionarios from './pages/Funcionarios/table'
 import Movimentacao from './pages/Movimentação'
+import NotFound from './pages/NotFound'
 
 const Router = () => {
   return (
