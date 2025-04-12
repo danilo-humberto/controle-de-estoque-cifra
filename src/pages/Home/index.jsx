@@ -37,10 +37,10 @@ const Home = () => {
         </div>
 
         <div className="mt-5 flex gap-4 h-5/6">
-          <div className="bg-[var(--gray-700)] flex-[2] xl:h-[90%] 2xl:h-[96%] rounded-lg p-4">
+          <div className="bg-[var(--gray-700)] flex-[2] h-full rounded-lg p-4">
             <Map />
           </div>
-          <div className="bg-[var(--gray-700)] flex-1 xl:h-[90%] 2xl:h-[96%] rounded-lg p-4">
+          <div className="bg-[var(--gray-700)] flex-1 h-full rounded-lg p-4">
             <Statistic />
           </div>
         </div>
