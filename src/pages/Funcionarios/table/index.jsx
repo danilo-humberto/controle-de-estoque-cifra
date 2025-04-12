@@ -7,6 +7,7 @@ import EditDialog from "./components/dialogs/EditDialog";
 import DeleteDialog from "./components/dialogs/DeleteDialog";
 import TableHeader from "./components/TableHeader";
 import TableBody from "./components/TableBody";
+import SearchFilter from "./components/filters/SearchFilter";
 
 const TableFuncionarios = () => {
   const {
@@ -56,12 +57,9 @@ const TableFuncionarios = () => {
           </CardHeader>
           <CardContent>
             <div className="flex justify-between pb-4 items-center sticky top-[4.5rem] z-10 bg-[var(--gray-800)]">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Pesquise ..."
-                className="border border-[var(--gray-700)] outline-none bg-transparent p-2 rounded-md w-[25%] text-[var(--gray-300)] text-sm placeholder:text-sm placeholder:text-[var(--gray-500)] focus:border-[var(--gray-500)]"
+              <SearchFilter 
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
               />
               <div className="flex items-center gap-4">
                 <AddDialog 
