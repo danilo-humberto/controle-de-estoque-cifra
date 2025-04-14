@@ -5,14 +5,16 @@ import { NavCard } from "./components/HomeCards/NavCard";
 import { TimeCard } from "./components/HomeCards/TimeCard";
 import Map from "./components/HomeMap/index";
 import Statistic from "./components/HomeStats/index";
+import { useMediaQuery } from "react-responsive";
 
 const Home = () => {
   const { horas, minutos } = useTime();
+  const isSmallScreen = useMediaQuery({ maxWidth: 1550 });
 
   return (
     <div className="w-4/5 h-full px-4 pb-4 mt-4 mx-auto overflow-hidden">
       <div className="w-full h-full">
-        <div className="w-full flex justify-between mt-4">
+        <div className="w-full flex justify-between">
           <div className="flex gap-4">
             <NavCard
               span="Funcionários"
@@ -37,10 +39,10 @@ const Home = () => {
         </div>
 
         <div className="mt-5 flex gap-4 h-5/6">
-          <div className="bg-[var(--gray-700)] flex-[2] h-full rounded-lg p-4">
+          <div className={`bg-[var(--gray-700)] flex-[2] ${isSmallScreen ? "h-[95%]" : "h-full"} rounded-lg p-4`}>
             <Map />
           </div>
-          <div className="bg-[var(--gray-700)] flex-1 h-full rounded-lg p-4">
+          <div className={`bg-[var(--gray-700)] flex-1 ${isSmallScreen ? "h-[95%]" : "h-full"} rounded-lg p-4`}>
             <Statistic />
           </div>
         </div>

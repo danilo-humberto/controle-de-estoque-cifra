@@ -21,8 +21,8 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const isSmallScreen = useMediaQuery({ maxWidth: 1400 });
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const isSmallScreen = useMediaQuery({ maxWidth: 1550 });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLightMode, setIsLightMode] = useState(false);
 
   const currentHour = new Date().getHours();
@@ -44,10 +44,14 @@ const Sidebar = () => {
   return (
     <div
       className={`h-full border-r border-[var(--gray-500)] transition-all ease-in-out duration-300 ${
-        isCollapsed ? "w-[80px]" : "xl:w-[250px] 2xl:w-[300px]"
+        isCollapsed ? "w-[80px]" : isSmallScreen ? "w-[250px]" : "w-[300px]"
       }`}
     >
-      <div className="flex flex-col p-4 gap-7 2xl:gap-12 h-full">
+      <div
+        className={`flex flex-col p-4 h-full ${
+          isSmallScreen ? "gap-8" : "gap-12"
+        }`}
+      >
         <div
           className="flex items-center gap-2 cursor-pointer h-12 w-full transition-all duration-300"
           onClick={() => setIsCollapsed(!isCollapsed)}
@@ -66,11 +70,13 @@ const Sidebar = () => {
           </h1>
         </div>
         <nav className="flex flex-col justify-between h-full w-full">
-          <ul className="flex flex-col xl:gap-1 2xl:gap-4">
+          <ul className={`flex flex-col ${isSmallScreen ? "gap-1" : "gap-4"}`}>
             <li>
               <Link
                 to="/"
-                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -96,7 +102,11 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   Home
@@ -106,7 +116,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/funcionarios"
-                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -132,7 +144,11 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   Funcionários
@@ -142,7 +158,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/equipamentos"
-                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -168,7 +186,11 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   Equipamentos
@@ -178,7 +200,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/linhas"
-                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -204,7 +228,11 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   Linhas
@@ -214,7 +242,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/movimentacao"
-                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] transition-all duration-300 rounded-md ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -240,7 +270,11 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   Movimentação
@@ -249,10 +283,14 @@ const Sidebar = () => {
             </li>
           </ul>
           {isLoggedIn ? (
-            <ul className="flex flex-col xl:gap-1 2xl:gap-4">
+            <ul
+              className={`flex flex-col ${isSmallScreen ? "gap-1" : "gap-4"}`}
+            >
               <li
                 onClick={toggleTheme}
-                className={`flex items-center xl:px-[0.7rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md cursor-pointer transition-all duration-300 ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md cursor-pointer transition-all duration-300 ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -296,14 +334,18 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 overflow-hidden ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   {isLightMode ? "Modo escuro" : "Modo claro"}
                 </span>
               </li>
               <li
-                className={`flex items-center p-[0.35rem] xl:ml-[0.1rem] h-12 w-full text-[var(--gray-300)] ${
+                className={`flex items-center p-[0.35rem] h-12 w-full text-[var(--gray-300)] ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -321,7 +363,11 @@ const Sidebar = () => {
                   </div>
                   <p
                     className={`text-[var(--gray-300)] transition-all duration-300 overflow-hidden ${
-                      isCollapsed ? "text-[0px]" : "text-base"
+                      isCollapsed
+                        ? "text-[0px]"
+                        : isSmallScreen
+                        ? "text-sm"
+                        : "text-base"
                     }`}
                   >
                     {greeting}, Eduardo
@@ -330,7 +376,9 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link
-                  className={`flex items-center xl:px-[0.7rem] xl:ml-[0.08rem] 2xl:p-2 h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${
+                  className={`flex items-center ${
+                    isSmallScreen ? "px-[0.7rem] ml-[0.08rem]" : "p-2"
+                  }] h-12 w-full text-[var(--gray-300)] hover:bg-[var(--gray-500)] rounded-md transition-all duration-300 ${
                     isCollapsed ? "gap-0" : "gap-2"
                   }`}
                   to="/sair"
@@ -357,7 +405,11 @@ const Sidebar = () => {
                   )}
                   <span
                     className={`transition-all duration-300 overflow-hidden text-red-500 ${
-                      isCollapsed ? "text-[0px]" : "text-base"
+                      isCollapsed
+                        ? "text-[0px]"
+                        : isSmallScreen
+                        ? "text-sm"
+                        : "text-base"
                     }`}
                   >
                     Sair
@@ -366,10 +418,14 @@ const Sidebar = () => {
               </li>
             </ul>
           ) : (
-            <ul className="flex flex-col gap-4">
+            <ul
+              className={`flex flex-col ${isSmallScreen ? "gap-1" : "gap-4"}`}
+            >
               <li
                 onClick={toggleTheme}
-                className={`flex items-center p-2 h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md cursor-pointer ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.7rem]" : "p-2"
+                } h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md cursor-pointer ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -413,14 +469,20 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   {isLightMode ? "Modo escuro" : "Modo claro"}
                 </span>
               </li>
               <li
-                className={`flex items-center p-2 h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md ${
+                className={`flex items-center ${
+                  isSmallScreen ? "px-[0.55rem]" : "p-2"
+                } h-12 w-full transition-all duration-300 text-gray-300 hover:bg-gray-500 rounded-md ${
                   isCollapsed ? "gap-0" : "gap-2"
                 }`}
               >
@@ -446,7 +508,11 @@ const Sidebar = () => {
                 )}
                 <span
                   className={`text-lime-500 transition-all duration-300 ${
-                    isCollapsed ? "text-[0px]" : "text-base"
+                    isCollapsed
+                      ? "text-[0px]"
+                      : isSmallScreen
+                      ? "text-sm"
+                      : "text-base"
                   }`}
                 >
                   Entrar

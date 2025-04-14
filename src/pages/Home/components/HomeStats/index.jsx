@@ -2,9 +2,11 @@ import React from "react";
 import { useHomeData } from "../../hooks/useHomeData";
 import statsItems from "./statsConfig";
 import StatItem from "./StatItem";
+import { useMediaQuery } from "react-responsive";
 
 const Statistic = () => {
   const { linhas, func, equip, filtrarEquipamentos } = useHomeData();
+  const isSmallScreen = useMediaQuery({ maxWidth: 1550 });
 
   const getQuantidade = (item) => {
     if (item.tipo) return filtrarEquipamentos(equip, item.tipo);
@@ -17,7 +19,7 @@ const Statistic = () => {
       <h2 className="text-center text-lg font-semibold">
         Estatística do Estoque
       </h2>
-      <div className="grid 2xl:grid-cols-2 xl:grid-cols-3 justify-items-center 2xl:mt-8 xl:mt-5">
+      <div className={`grid justify-items-center mt-8 ${isSmallScreen ? "grid-cols-3" : "grid-cols-2"}`}>
         {statsItems.map((item, index) => (
           <StatItem 
             key={index}
