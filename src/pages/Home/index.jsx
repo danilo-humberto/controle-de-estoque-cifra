@@ -21,28 +21,43 @@ const Home = () => {
               icon={<Users size={40} />}
               color="bg-sky-700 hover:bg-sky-800"
               to="/funcionarios"
+              isSmallScreen={isSmallScreen}
             />
             <NavCard
               span="Equipamentos"
               icon={<Package size={40} />}
               color="bg-emerald-700 hover:bg-emerald-800"
               to="/equipamentos"
+              isSmallScreen={isSmallScreen}
             />
             <NavCard
               span="Linhas"
               icon={<Voicemail size={40} />}
               color="bg-pink-700 hover:bg-pink-800"
               to="/linhas"
+              isSmallScreen={isSmallScreen}
             />
           </div>
-          <TimeCard horas={horas} minutos={minutos} />
+          <TimeCard
+            horas={horas}
+            minutos={minutos}
+            isSmallScreen={isSmallScreen}
+          />
         </div>
 
         <div className="mt-5 flex gap-4 h-5/6">
-          <div className={`bg-[var(--gray-700)] flex-[2] ${isSmallScreen ? "h-[95%]" : "h-full"} rounded-lg p-4`}>
+          <div
+            className={`bg-[var(--gray-700)] flex-[2] ${
+              isSmallScreen ? "h-[98%]" : "h-full"
+            } rounded-lg p-4`}
+          >
             <Map />
           </div>
-          <div className={`bg-[var(--gray-700)] flex-1 ${isSmallScreen ? "h-[95%]" : "h-full"} rounded-lg p-4`}>
+          <div
+            className={`bg-[var(--gray-700)] flex-1 ${
+              isSmallScreen ? "h-[98%]" : "h-full"
+            } rounded-lg p-4`}
+          >
             <Statistic />
           </div>
         </div>

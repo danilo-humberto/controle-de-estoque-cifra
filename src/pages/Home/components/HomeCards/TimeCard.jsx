@@ -1,7 +1,11 @@
 import React from "react";
 
-export const TimeCard = ({ horas, minutos }) => (
-  <div className="bg-yellow-400 w-48 2xl:h-24 xl:h-20 rounded-lg select-none flex items-center justify-center font-bold gap-4">
+export const TimeCard = ({ horas, minutos, isSmallScreen }) => (
+  <div
+    className={`bg-yellow-400 w-48 ${
+      isSmallScreen ? "h-20" : "h-24"
+    } rounded-lg select-none flex items-center justify-center font-bold gap-4`}
+  >
     <div className="flex items-center gap-4">
       <div className="flex flex-col items-center mt-2">
         <span className="text-xl">{horas}</span>
